@@ -1,0 +1,355 @@
+{
+  "hulls": [
+    {
+      "id": "wasp",
+      "mod": 0,
+      "base_name": "WASP",
+      "name": "WASP M0",
+      "price": 10,
+      "upgrade_price": 0,
+      "min_rank": 0,
+      "visual_source_mod": 0,
+      "asset_model": "res://assets/hulls/wasp_m0_tx.glb",
+      "asset_texture_dir": "res://assets/tank_textures/wasp_m0_tx",
+      "asset_mount": [
+        0.0,
+        1.485,
+        0.825
+      ],
+      "asset_source": "TXServer-Public"
+    },
+    {
+      "id": "wasp",
+      "mod": 1,
+      "base_name": "WASP",
+      "name": "WASP M1",
+      "price": 0,
+      "upgrade_price": 15,
+      "min_rank": 5,
+      "visual_source_mod": 1,
+      "asset_model": "res://assets/hulls/wasp_m1_tx.glb",
+      "asset_texture_dir": "res://assets/tank_textures/wasp_m1_tx",
+      "asset_source": "TXServer-Public"
+    },
+    {
+      "id": "wasp",
+      "mod": 2,
+      "base_name": "WASP",
+      "name": "WASP M2",
+      "price": 0,
+      "upgrade_price": 30,
+      "min_rank": 10,
+      "visual_source_mod": 2,
+      "asset_model": "res://assets/hulls/wasp_m2.dae",
+      "asset_texture_dir": "res://assets/tank_textures/wasp_m2"
+    },
+    {
+      "id": "wasp",
+      "mod": 3,
+      "base_name": "WASP",
+      "name": "WASP M3",
+      "price": 0,
+      "upgrade_price": 60,
+      "min_rank": 15,
+      "visual_source_mod": 2,
+      "asset_model": "res://assets/hulls/wasp_m2.dae",
+      "asset_texture_dir": "res://assets/tank_textures/wasp_m2"
+    },
+    {
+      "id": "viking",
+      "mod": 0,
+      "base_name": "VIKING",
+      "name": "VIKING M0",
+      "price": 20,
+      "upgrade_price": 0,
+      "min_rank": 0,
+      "visual_source_mod": 0,
+      "asset_model": "res://assets/hulls/viking_m0_tx.glb",
+      "asset_texture_dir": "res://assets/tank_textures/viking_m0_tx",
+      "asset_source": "TXServer-Public"
+    },
+    {
+      "id": "viking",
+      "mod": 1,
+      "base_name": "VIKING",
+      "name": "VIKING M1",
+      "price": 0,
+      "upgrade_price": 25,
+      "min_rank": 5,
+      "visual_source_mod": 1,
+      "asset_model": "res://assets/hulls/viking_m1.dae",
+      "asset_texture_dir": "res://assets/tank_textures/viking_m1"
+    },
+    {
+      "id": "viking",
+      "mod": 2,
+      "base_name": "VIKING",
+      "name": "VIKING M2",
+      "price": 0,
+      "upgrade_price": 50,
+      "min_rank": 10,
+      "visual_source_mod": 2,
+      "asset_model": "res://assets/hulls/viking_m2_tx.glb",
+      "asset_texture_dir": "res://assets/tank_textures/viking_m2_tx",
+      "asset_source": "TXServer-Public"
+    },
+    {
+      "id": "viking",
+      "mod": 3,
+      "base_name": "VIKING",
+      "name": "VIKING M3",
+      "price": 0,
+      "upgrade_price": 100,
+      "min_rank": 15,
+      "visual_source_mod": 2,
+      "asset_model": "res://assets/hulls/viking_m2_tx.glb",
+      "asset_texture_dir": "res://assets/tank_textures/viking_m2_tx",
+      "asset_source": "TXServer-Public (M2 visual fallback)"
+    },
+    {
+      "id": "mamont",
+      "mod": 0,
+      "base_name": "MAMONT",
+      "name": "MAMONT M0",
+      "price": 30,
+      "upgrade_price": 0,
+      "min_rank": 0,
+      "visual_source_mod": 0,
+      "asset_model": "res://assets/hulls/mamont_m0_tx.glb",
+      "asset_texture_dir": "res://assets/tank_textures/mamont_m0_tx",
+      "asset_source": "TXServer-Public"
+    },
+    {
+      "id": "mamont",
+      "mod": 1,
+      "base_name": "MAMONT",
+      "name": "MAMONT M1",
+      "price": 0,
+      "upgrade_price": 40,
+      "min_rank": 5,
+      "visual_source_mod": 1,
+      "asset_model": "res://assets/hulls/mamont_m1_tx.glb",
+      "asset_texture_dir": "res://assets/tank_textures/mamont_m1_tx",
+      "asset_source": "TXServer-Public"
+    },
+    {
+      "id": "mamont",
+      "mod": 2,
+      "base_name": "MAMONT",
+      "name": "MAMONT M2",
+      "price": 0,
+      "upgrade_price": 80,
+      "min_rank": 10,
+      "visual_source_mod": 2,
+      "asset_model": "res://assets/hulls/mamont_m2_tx.glb",
+      "asset_texture_dir": "res://assets/tank_textures/mamont_m2_tx",
+      "asset_source": "TXServer-Public"
+    },
+    {
+      "id": "mamont",
+      "mod": 3,
+      "base_name": "MAMONT",
+      "name": "MAMONT M3",
+      "price": 0,
+      "upgrade_price": 160,
+      "min_rank": 15,
+      "visual_source_mod": 3,
+      "asset_model": "res://assets/hulls/mamont_m3.dae",
+      "asset_texture_dir": "res://assets/tank_textures/mamont_m3"
+    }
+  ],
+  "turrets": [
+    {
+      "id": "smoky",
+      "mod": 0,
+      "base_name": "SMOKY",
+      "name": "SMOKY M0",
+      "price": 10,
+      "upgrade_price": 0,
+      "min_rank": 0,
+      "visual_source_mod": 0,
+      "asset_model": "res://assets/turrets/smoky_m0_tx.glb",
+      "asset_texture_dir": "res://assets/tank_textures/smoky_m0_tx",
+      "asset_muzzle": [
+        0.0,
+        0.32510265707969666,
+        -2.6831265091896057
+      ],
+      "asset_source": "TXServer-Public"
+    },
+    {
+      "id": "smoky",
+      "mod": 1,
+      "base_name": "SMOKY",
+      "name": "SMOKY M1",
+      "price": 0,
+      "upgrade_price": 15,
+      "min_rank": 5,
+      "visual_source_mod": 1,
+      "asset_model": "res://assets/turrets/smoky_m1_tx.glb",
+      "asset_texture_dir": "res://assets/tank_textures/smoky_m1_tx",
+      "asset_source": "TXServer-Public",
+      "asset_muzzle": [
+        1.907348590179935e-08,
+        0.2861321046948433,
+        -2.8116495609283447
+      ]
+    },
+    {
+      "id": "smoky",
+      "mod": 2,
+      "base_name": "SMOKY",
+      "name": "SMOKY M2",
+      "price": 0,
+      "upgrade_price": 30,
+      "min_rank": 10,
+      "visual_source_mod": 2,
+      "asset_model": "res://assets/turrets/smoky_m2.obj",
+      "asset_texture_dir": "res://assets/tank_textures/smoky_m2"
+    },
+    {
+      "id": "smoky",
+      "mod": 3,
+      "base_name": "SMOKY",
+      "name": "SMOKY M3",
+      "price": 0,
+      "upgrade_price": 60,
+      "min_rank": 15,
+      "visual_source_mod": 2,
+      "asset_model": "res://assets/turrets/smoky_m2.obj",
+      "asset_texture_dir": "res://assets/tank_textures/smoky_m2"
+    },
+    {
+      "id": "firebird",
+      "mod": 0,
+      "base_name": "FIREBIRD",
+      "name": "FIREBIRD M0",
+      "price": 20,
+      "upgrade_price": 0,
+      "min_rank": 0,
+      "visual_source_mod": 0,
+      "asset_model": "res://assets/turrets/firebird_m0_tx.glb",
+      "asset_texture_dir": "res://assets/tank_textures/firebird_m0_tx",
+      "asset_source": "TXServer-Public",
+      "asset_muzzle": [
+        0.0,
+        0.4771900027990341,
+        -3.2648271322250366
+      ]
+    },
+    {
+      "id": "firebird",
+      "mod": 1,
+      "base_name": "FIREBIRD",
+      "name": "FIREBIRD M1",
+      "price": 0,
+      "upgrade_price": 25,
+      "min_rank": 5,
+      "visual_source_mod": 1,
+      "asset_model": "res://assets/turrets/firebird_m1.obj",
+      "asset_texture_dir": "res://assets/tank_textures/firebird_m1"
+    },
+    {
+      "id": "firebird",
+      "mod": 2,
+      "base_name": "FIREBIRD",
+      "name": "FIREBIRD M2",
+      "price": 0,
+      "upgrade_price": 50,
+      "min_rank": 10,
+      "visual_source_mod": 2,
+      "asset_model": "res://assets/turrets/firebird_m2_tx.glb",
+      "asset_texture_dir": "res://assets/tank_textures/firebird_m2_tx",
+      "asset_source": "TXServer-Public",
+      "asset_muzzle": [
+        0.0,
+        0.39841443905606866,
+        -3.455033600330353
+      ]
+    },
+    {
+      "id": "firebird",
+      "mod": 3,
+      "base_name": "FIREBIRD",
+      "name": "FIREBIRD M3",
+      "price": 0,
+      "upgrade_price": 100,
+      "min_rank": 15,
+      "visual_source_mod": 2,
+      "asset_model": "res://assets/turrets/firebird_m2_tx.glb",
+      "asset_texture_dir": "res://assets/tank_textures/firebird_m2_tx",
+      "asset_muzzle": [
+        0.0,
+        0.39841443905606866,
+        -3.455033600330353
+      ],
+      "asset_source": "TXServer-Public (M2 visual fallback)"
+    },
+    {
+      "id": "thunder",
+      "mod": 0,
+      "base_name": "THUNDER",
+      "name": "THUNDER M0",
+      "price": 30,
+      "upgrade_price": 0,
+      "min_rank": 0,
+      "visual_source_mod": 0,
+      "asset_model": "res://assets/turrets/thunder_m0_tx.glb",
+      "asset_texture_dir": "res://assets/tank_textures/thunder_m0_tx",
+      "asset_source": "TXServer-Public",
+      "asset_muzzle": [
+        0.0,
+        0.512396015226841,
+        -3.365340232849121
+      ]
+    },
+    {
+      "id": "thunder",
+      "mod": 1,
+      "base_name": "THUNDER",
+      "name": "THUNDER M1",
+      "price": 0,
+      "upgrade_price": 40,
+      "min_rank": 5,
+      "visual_source_mod": 1,
+      "asset_model": "res://assets/turrets/thunder_m1_tx.glb",
+      "asset_texture_dir": "res://assets/tank_textures/thunder_m1_tx",
+      "asset_source": "TXServer-Public",
+      "asset_muzzle": [
+        0.0,
+        0.5129104405641556,
+        -3.386228173971176
+      ]
+    },
+    {
+      "id": "thunder",
+      "mod": 2,
+      "base_name": "THUNDER",
+      "name": "THUNDER M2",
+      "price": 0,
+      "upgrade_price": 80,
+      "min_rank": 10,
+      "visual_source_mod": 2,
+      "asset_model": "res://assets/turrets/thunder_m2_tx.glb",
+      "asset_texture_dir": "res://assets/tank_textures/thunder_m2_tx",
+      "asset_source": "TXServer-Public",
+      "asset_muzzle": [
+        0.0,
+        0.5174108743667603,
+        -3.4741660356521606
+      ]
+    },
+    {
+      "id": "thunder",
+      "mod": 3,
+      "base_name": "THUNDER",
+      "name": "THUNDER M3",
+      "price": 0,
+      "upgrade_price": 160,
+      "min_rank": 15,
+      "visual_source_mod": 3,
+      "asset_model": "res://assets/turrets/thunder_m3.obj",
+      "asset_texture_dir": "res://assets/tank_textures/thunder_m3"
+    }
+  ]
+}

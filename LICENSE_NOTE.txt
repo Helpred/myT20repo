@@ -1,0 +1,3 @@
+This package contains game assets supplied by the user from the historical Tanki Online 2.0 demo.
+No ownership or relicensing of those assets is asserted here. Keep distribution/usage consistent with the rights you have to the original material.
+The newly written Python/GDScript/tooling code in this package is provided for this project without additional dependency licenses.

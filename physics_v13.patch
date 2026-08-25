@@ -1,0 +1,723 @@
+--- a/client/scripts/tank.gd
++++ b/client/scripts/tank.gd
+@@ -1,4 +1,4 @@
+-extends CharacterBody3D
++extends RigidBody3D
+ class_name TankActor
+ 
+ const SheetEffectScript = preload("res://scripts/sheet_effect.gd")
+@@ -16,6 +16,9 @@
+ var _state_elapsed: float = 0.0
+ var _target_position: Vector3 = Vector3.ZERO
+ var _target_yaw: float = 0.0
++var _target_rotation: Quaternion = Quaternion.IDENTITY
++var _target_linear_velocity: Vector3 = Vector3.ZERO
++var _target_angular_velocity: Vector3 = Vector3.ZERO
+ var _target_turret: float = 0.0
+ var _target_left_track: float = 0.0
+ var _target_right_track: float = 0.0
+@@ -56,15 +59,17 @@
+ var _rock_pitch: float = 0.0
+ var _rock_velocity: float = 0.0
+ var _step_grace: float = 0.0
++var _ground_contacts: int = 0
++var _drive_input: int = 0
++var _turn_input: int = 0
++var _suspension_points: Array[Dictionary] = []
+ 
+ const MAX_SPEED := 8.0 # Original demo conMaxSpeed=800 cm/s.
+-const MAX_TURN_SPEED := 1.72 # Softer than the earlier build so A/D does not spin up too aggressively.
+-const DRIVE_ACCEL := 1.85 # normalized track speed / sec
+-const COAST_DECEL := 0.58 # long free-roll after releasing W/S
+-const SERVICE_BRAKE := 2.65 # stronger when reversing direction
+-const TURN_RESPONSE := 2.05 # angular acceleration smoothing
+-const TURN_INPUT_SCALE := 0.36
+-const GRAVITY := 19.6
++const DRIVE_ACCEL := 1.65 # normalized track speed / sec
++const COAST_DECEL := 0.52
++const SERVICE_BRAKE := 2.35
++const TURN_INPUT_SCALE := 0.34
++const WORLD_GRAVITY := 9.8
+ const CAMERA_MIN_X := -38.0
+ const CAMERA_MAX_X := -6.0
+ 
+@@ -76,7 +81,11 @@
+     name = "Tank_%d" % player_id
+     _build_body()
+     _build_visuals()
++    _rebuild_suspension_points()
+     _build_audio()
++    freeze_mode = RigidBody3D.FREEZE_MODE_KINEMATIC
++    freeze = not local_control
++    sleeping = false
+     if local_control:
+         _build_camera()
+ 
+@@ -106,7 +115,12 @@
+                 "step_height":0.82,
+                 "step_probe":0.62,
+                 "rock_strength":0.00125,
+-                "wheel_bias_y":0.00
++                "wheel_bias_y":0.00,
++                "physics_mass":4.0,
++                "suspension_k":55.0,
++                "suspension_damping":9.0,
++                "drive_gain":0.040,
++                "lateral_gain":0.22
+             }
+         1:
+             return {
+@@ -132,7 +146,12 @@
+                 "step_height":0.94,
+                 "step_probe":0.70,
+                 "rock_strength":0.00105,
+-                "wheel_bias_y":0.075
++                "wheel_bias_y":0.075,
++                "physics_mass":5.8,
++                "suspension_k":68.0,
++                "suspension_damping":10.5,
++                "drive_gain":0.038,
++                "lateral_gain":0.24
+             }
+         _:
+             return {
+@@ -158,18 +177,40 @@
+                 "step_height":1.02,
+                 "step_probe":0.76,
+                 "rock_strength":0.00085,
+-                "wheel_bias_y":0.02
++                "wheel_bias_y":0.02,
++                "physics_mass":8.4,
++                "suspension_k":82.0,
++                "suspension_damping":12.5,
++                "drive_gain":0.035,
++                "lateral_gain":0.27
+             }
+ 
+ func _build_body() -> void:
+-    floor_snap_length = 1.05
+-    up_direction = Vector3.UP
++    var cfg: Dictionary = _cfg()
++    var s: Vector3 = cfg["size"]
++    mass = float(cfg["physics_mass"])
++    gravity_scale = 1.0
++    linear_damp = 0.18
++    angular_damp = 1.35
++    continuous_cd = true
++    contact_monitor = true
++    max_contacts_reported = 24
++    can_sleep = true
++    center_of_mass_mode = RigidBody3D.CENTER_OF_MASS_MODE_CUSTOM
++    center_of_mass = Vector3(0.0, s.y * 0.34, 0.0)
++
++    var physical_material := PhysicsMaterial.new()
++    physical_material.friction = 0.92
++    physical_material.bounce = 0.0
++    physics_material_override = physical_material
++
+     var collision := CollisionShape3D.new()
+     collision.name = "PhysicsCollision"
+     var shape := BoxShape3D.new()
+-    var s: Vector3 = _cfg()["size"]
+-    shape.size = Vector3(s.x * 0.74, s.y * 0.92, s.z * 0.70)
+-    collision.position.y = s.y * 0.50
++    # The collision volume is deliberately tucked inside the track silhouette.
++    # Suspension rays support the tank; this box handles hard contacts, walls and rollovers.
++    shape.size = Vector3(s.x * 0.72, s.y * 0.82, s.z * 0.68)
++    collision.position.y = s.y * 0.47
+     collision.shape = shape
+     add_child(collision)
+ 
+@@ -372,6 +413,48 @@
+             return found
+     return null
+ 
++func _rebuild_suspension_points() -> void:
++    _suspension_points.clear()
++    var cfg: Dictionary = _cfg()
++    var travel: float = float(cfg["suspension_travel"])
++    var radius: float = float(cfg["wheel_radius"])
++    var k: float = float(cfg["suspension_k"])
++    var wheel_count := max(1, _left_wheels.size() + _right_wheels.size())
++    var static_sag := (mass * WORLD_GRAVITY) / (float(wheel_count) * maxf(k, 1.0))
++
++    _append_suspension_from_wheels(_left_wheels, -1.0, travel, radius, static_sag)
++    _append_suspension_from_wheels(_right_wheels, 1.0, travel, radius, static_sag)
++
++    if _suspension_points.is_empty():
++        var s: Vector3 = cfg["size"]
++        for side in [-1.0, 1.0]:
++            for z_factor in [-0.34, -0.17, 0.0, 0.17, 0.34]:
++                var wheel_center := Vector3(side * s.x * 0.31, radius + 0.08, float(z_factor) * s.z)
++                _suspension_points.append({
++                    "anchor": wheel_center + Vector3.UP * travel,
++                    "side": side,
++                    "max_len": radius + travel + static_sag,
++                    "static_sag": static_sag
++                })
++
++func _append_suspension_from_wheels(wheels: Array[Node3D], side: float, travel: float, radius: float, static_sag: float) -> void:
++    for wheel in wheels:
++        if wheel == null:
++            continue
++        var wheel_local := to_local(wheel.global_position)
++        _suspension_points.append({
++            "anchor": wheel_local + Vector3.UP * travel,
++            "side": side,
++            "max_len": radius + travel + static_sag,
++            "static_sag": static_sag
++        })
++
++func teleport_spawn(spawn_transform: Transform3D) -> void:
++    global_transform = spawn_transform
++    linear_velocity = Vector3.ZERO
++    angular_velocity = Vector3.ZERO
++    sleeping = false
++
+ func _build_muzzle_soot() -> void:
+     if _muzzle == null:
+         return
+@@ -444,8 +527,9 @@
+     # SprungBody. This prevents suspension/rocking from making the player seasick.
+     _camera_yaw_root = Node3D.new()
+     _camera_yaw_root.name = "CameraYawPivot"
+-    _camera_yaw_root.position = _camera_anchor_base
++    _camera_yaw_root.top_level = true
+     add_child(_camera_yaw_root)
++    _update_stable_camera_pivot()
+     _camera_rig = Node3D.new()
+     _camera_rig.name = "CameraRig"
+     _camera_rig.position = Vector3(0,1.1,1.0)
+@@ -463,11 +547,22 @@
+ func apply_network_state(state: Dictionary) -> void:
+     var p = state.get("p", null)
+     if p is Array and p.size() >= 3:
+-        _target_position = Vector3(float(p[0]),float(p[1]),float(p[2]))
++        _target_position = Vector3(float(p[0]), float(p[1]), float(p[2]))
+         if not _has_target:
+             global_position = _target_position
+         _has_target = true
+     _target_yaw = float(state.get("yaw", rotation.y))
++    var r = state.get("rot", null)
++    if r is Array and r.size() >= 4:
++        _target_rotation = Quaternion(float(r[0]), float(r[1]), float(r[2]), float(r[3])).normalized()
++    else:
++        _target_rotation = Quaternion(Vector3.UP, _target_yaw)
++    var lv = state.get("lin_vel", null)
++    if lv is Array and lv.size() >= 3:
++        _target_linear_velocity = Vector3(float(lv[0]), float(lv[1]), float(lv[2]))
++    var av = state.get("ang_vel", null)
++    if av is Array and av.size() >= 3:
++        _target_angular_velocity = Vector3(float(av[0]), float(av[1]), float(av[2]))
+     _target_turret = float(state.get("turret", turret_yaw))
+     current_speed = float(state.get("speed", current_speed))
+     _target_left_track = float(state.get("left_track", current_speed / MAX_SPEED))
+@@ -477,64 +572,44 @@
+ func _physics_process(delta: float) -> void:
+     _fire_cooldown = maxf(0.0, _fire_cooldown - delta)
+     if local_control:
+-        _local_physics(delta)
++        _read_local_controls(delta)
++        _apply_suspension_and_track_forces(delta)
++        _apply_climb_assist(delta)
++        current_speed = linear_velocity.dot(-global_basis.z.normalized())
+         _state_elapsed += delta
+         if _state_elapsed >= 0.05:
+             _state_elapsed = 0.0
+             _send_state()
+     else:
+         _remote_interpolation(delta)
+-    _stick_to_ground(delta)
++
+     _update_visual_pose(delta)
+     _update_wheel_suspension(delta)
+     _update_track_animation(delta)
+     _turret_root.rotation.y = turret_yaw
+-    if _camera_yaw_root != null:
+-        _camera_yaw_root.rotation.y = turret_yaw
++    _update_stable_camera_pivot()
+     _update_audio_and_fx()
+ 
+-func _local_physics(delta: float) -> void:
+-    var move := 0
++func _read_local_controls(delta: float) -> void:
++    _drive_input = 0
+     if Input.is_key_pressed(KEY_UP) or Input.is_key_pressed(KEY_W):
+-        move += 1
++        _drive_input += 1
+     if Input.is_key_pressed(KEY_DOWN) or Input.is_key_pressed(KEY_S):
+-        move -= 1
+-    var turn := 0
++        _drive_input -= 1
++    _turn_input = 0
+     if Input.is_key_pressed(KEY_LEFT) or Input.is_key_pressed(KEY_A):
+-        turn += 1
++        _turn_input += 1
+     if Input.is_key_pressed(KEY_RIGHT) or Input.is_key_pressed(KEY_D):
+-        turn -= 1
++        _turn_input -= 1
+ 
+-    # Differential drive, but with softer steering than the previous build.
+-    # Releasing W/S does not apply a full brake: the tracks coast down gradually.
+-    var turn_command := float(turn) * TURN_INPUT_SCALE
+-    var left_target := clampf(float(move) - turn_command, -1.0, 1.0)
+-    var right_target := clampf(float(move) + turn_command, -1.0, 1.0)
+-    _left_track_speed = _approach_track_speed(_left_track_speed, left_target, move, delta)
+-    _right_track_speed = _approach_track_speed(_right_track_speed, right_target, move, delta)
+-    if turn == 0:
++    var turn_command := float(_turn_input) * TURN_INPUT_SCALE
++    var left_target := clampf(float(_drive_input) - turn_command, -1.0, 1.0)
++    var right_target := clampf(float(_drive_input) + turn_command, -1.0, 1.0)
++    _left_track_speed = _approach_track_speed(_left_track_speed, left_target, _drive_input, delta)
++    _right_track_speed = _approach_track_speed(_right_track_speed, right_target, _drive_input, delta)
++    if _turn_input == 0:
+         _damp_track_differential(delta)
+ 
+-    var previous_speed := current_speed
+-    var forward_drive := (_left_track_speed + _right_track_speed) * 0.5
+-    var turn_drive := (_right_track_speed - _left_track_speed) * 0.5
+-    current_speed = forward_drive * MAX_SPEED
+-
+-    # Angular inertia keeps A/D from instantly spinning the chassis.
+-    var moving_ratio := clampf(absf(current_speed) / MAX_SPEED, 0.0, 1.0)
+-    var turn_gain := lerpf(float(_cfg()["turn_in_place"]), float(_cfg()["turn_running"]), moving_ratio)
+-    var target_turn_velocity := turn_drive * MAX_TURN_SPEED * turn_gain
+-    _turn_velocity = move_toward(_turn_velocity, target_turn_velocity, TURN_RESPONSE * delta)
+-    if turn == 0:
+-        _turn_velocity = move_toward(_turn_velocity, 0.0, TURN_RESPONSE * 0.72 * delta)
+-    rotation.y += _turn_velocity * delta
+-
+-    # Chassis pitch impulse from acceleration/braking; the spring is integrated in
+-    # _update_visual_pose so it visibly settles after stopping.
+-    var longitudinal_accel := (current_speed - previous_speed) / maxf(delta, 0.0001)
+-    _last_speed_for_rock = current_speed
+-    _apply_rock_impulse(longitudinal_accel, delta)
+-
+     var turret_input := 0
+     if Input.is_key_pressed(KEY_Z):
+         turret_input += 1
+@@ -542,19 +617,6 @@
+         turret_input -= 1
+     turret_yaw += float(turret_input) * 2.0 * delta
+ 
+-    var forward := -global_basis.z.normalized()
+-    velocity.x = forward.x * current_speed
+-    velocity.z = forward.z * current_speed
+-    if is_on_floor():
+-        velocity.y = -0.25
+-    else:
+-        velocity.y -= GRAVITY * delta
+-
+-    _step_grace = maxf(0.0, _step_grace - delta)
+-    if absf(current_speed) > 0.20 and is_on_floor():
+-        _attempt_step_up(forward * signf(current_speed), delta)
+-    move_and_slide()
+-
+     _handle_fire()
+     if _spring != null:
+         if Input.is_key_pressed(KEY_PAGEUP):
+@@ -572,74 +634,136 @@
+         rate = COAST_DECEL
+     if target * current < -0.01:
+         rate = SERVICE_BRAKE
+-    if move_input == 0 and absf(target) < 0.001 and absf(current) < 0.22:
+-        rate = lerpf(rate, 1.35, 0.55)
+     return move_toward(current, target, rate * delta)
+ 
+ func _damp_track_differential(delta: float) -> void:
+-    # Kill sideways/yaw scrub much faster than longitudinal speed. This preserves
+-    # the tank's rolling inertia while making the tracks regain grip after A/D.
+     var average := (_left_track_speed + _right_track_speed) * 0.5
+     var differential := (_right_track_speed - _left_track_speed) * 0.5
+-    differential = move_toward(differential, 0.0, 1.75 * delta)
++    differential = move_toward(differential, 0.0, 1.55 * delta)
+     _left_track_speed = clampf(average - differential, -1.0, 1.0)
+     _right_track_speed = clampf(average + differential, -1.0, 1.0)
+ 
+-func _apply_rock_impulse(accel: float, delta: float) -> void:
+-    # Only the sprung hull rocks. Keep the angle deliberately subtle: the old
+-    # build reached ~6 degrees and made the tank look like it was rolling on a ball.
+-    var target := clampf(accel * float(_cfg()["rock_strength"]), -0.018, 0.018)
+-    var spring_force := (target - _rock_pitch) * 30.0
+-    _rock_velocity += spring_force * delta
+-    _rock_velocity *= exp(-8.5 * delta)
+-    _rock_pitch += _rock_velocity * delta
+-    _rock_pitch = clampf(_rock_pitch, -0.026, 0.026)
+-
+-func _attempt_step_up(direction: Vector3, delta: float) -> void:
+-    var s: Vector3 = _cfg()["size"]
+-    var step_height: float = float(_cfg()["step_height"])
+-    var probe_extra: float = float(_cfg()["step_probe"])
+-    var dir := direction.normalized()
+-    var front_distance := s.z * 0.38 + probe_extra
++func _apply_suspension_and_track_forces(_delta: float) -> void:
++    if _suspension_points.is_empty():
++        return
++    var cfg: Dictionary = _cfg()
++    var spring_k: float = float(cfg["suspension_k"])
++    var spring_damping: float = float(cfg["suspension_damping"])
++    var drive_gain: float = float(cfg["drive_gain"])
++    var lateral_gain: float = float(cfg["lateral_gain"])
++    var up := global_basis.y.normalized()
++    var down := -up
++    var forward_raw := -global_basis.z.normalized()
++    var side_raw := global_basis.x.normalized()
+     var space := get_world_3d().direct_space_state
+-    var lateral := global_basis.x.normalized() * s.x * 0.22
+-    var best_rise := -1.0
+-    var best_y := global_position.y
+-    for offset in [Vector3.ZERO, lateral, -lateral]:
+-        var ahead := global_position + dir * front_distance + offset
+-        var from := ahead + Vector3.UP * (step_height + 0.65)
+-        var to := ahead + Vector3.DOWN * 0.40
+-        var query := PhysicsRayQueryParameters3D.create(from, to)
++    _ground_contacts = 0
++
++    for point in _suspension_points:
++        var anchor_local: Vector3 = point["anchor"]
++        var anchor_world: Vector3 = global_transform * anchor_local
++        var max_len: float = float(point["max_len"])
++        var query := PhysicsRayQueryParameters3D.create(anchor_world, anchor_world + down * (max_len + 0.12))
+         query.exclude = [get_rid()]
+         var hit := space.intersect_ray(query)
+         if hit.is_empty():
+             continue
++
+         var hit_pos: Vector3 = hit["position"]
+         var hit_normal: Vector3 = hit["normal"]
+-        var rise := hit_pos.y - global_position.y
+-        if rise <= 0.04 or rise > step_height or hit_normal.y < 0.48:
++        hit_normal = hit_normal.normalized()
++        var distance := anchor_world.distance_to(hit_pos)
++        var compression := maxf(0.0, max_len - distance)
++        if compression <= 0.0:
+             continue
+-        # Verify that the space above the ledge is not blocked by a wall.
+-        var clearance_from := hit_pos + Vector3.UP * (s.y * 0.70 + 0.10)
+-        var clearance_to := clearance_from + dir * (s.z * 0.12 + 0.18)
+-        var clearance := PhysicsRayQueryParameters3D.create(clearance_from, clearance_to)
+-        clearance.exclude = [get_rid()]
+-        if not space.intersect_ray(clearance).is_empty():
++        _ground_contacts += 1
++
++        var offset := hit_pos - global_position
++        var point_velocity := linear_velocity + angular_velocity.cross(offset)
++        var suspension_speed := point_velocity.dot(up)
++        var spring_force := compression * spring_k - suspension_speed * spring_damping
++        spring_force = clampf(spring_force, 0.0, mass * WORLD_GRAVITY * 0.85)
++        apply_force(up * spring_force, offset)
++
++        var forward := forward_raw.slide(hit_normal)
++        var side := side_raw.slide(hit_normal)
++        if forward.length_squared() > 0.001:
++            forward = forward.normalized()
++        if side.length_squared() > 0.001:
++            side = side.normalized()
++
++        var track_speed: float = _left_track_speed if float(point["side"]) < 0.0 else _right_track_speed
++        var target_speed := track_speed * MAX_SPEED
++        var forward_speed := point_velocity.dot(forward)
++        var drive_force := (target_speed - forward_speed) * mass * drive_gain
++        apply_force(forward * drive_force, offset)
++
++        var lateral_speed := point_velocity.dot(side)
++        var grip_force := -lateral_speed * mass * lateral_gain
++        apply_force(side * grip_force, offset)
++
++func _apply_climb_assist(_delta: float) -> void:
++    if _ground_contacts <= 0 or absf((_left_track_speed + _right_track_speed) * 0.5) < 0.12:
++        return
++    # Do not magically climb while on the side or upside down. In those states the
++    # rigid body is deliberately left to gravity/collision and can fully roll over.
++    var local_up := global_basis.y.normalized()
++    if local_up.dot(Vector3.UP) < 0.45:
++        return
++    var cfg: Dictionary = _cfg()
++    var s: Vector3 = cfg["size"]
++    var step_height: float = float(cfg["step_height"])
++    var direction_sign := signf((_left_track_speed + _right_track_speed) * 0.5)
++    var forward := -global_basis.z.normalized() * direction_sign
++    var side := global_basis.x.normalized()
++    var space := get_world_3d().direct_space_state
++    var front_center := global_position + forward * (s.z * 0.34) + local_up * (s.y * 0.20)
++
++    for lateral in [-0.24, 0.0, 0.24]:
++        var lower_from := front_center + side * (s.x * float(lateral))
++        var lower_to := lower_from + forward * (float(cfg["step_probe"]) + 0.38)
++        var low_query := PhysicsRayQueryParameters3D.create(lower_from, lower_to)
++        low_query.exclude = [get_rid()]
++        var low_hit := space.intersect_ray(low_query)
++        if low_hit.is_empty():
++            continue
++        var low_normal: Vector3 = low_hit["normal"]
++        low_normal = low_normal.normalized()
++        if absf(low_normal.dot(Vector3.UP)) > 0.58:
++            continue
++
++        var upper_from := lower_from + local_up * step_height
++        var upper_to := upper_from + forward * (float(cfg["step_probe"]) + 0.46)
++        var high_query := PhysicsRayQueryParameters3D.create(upper_from, upper_to)
++        high_query.exclude = [get_rid()]
++        if not space.intersect_ray(high_query).is_empty():
+             continue
+-        if rise > best_rise:
+-            best_rise = rise
+-            best_y = hit_pos.y + 0.035
+-    if best_rise < 0.0:
++
++        var contact: Vector3 = low_hit["position"]
++        var offset := contact - global_position
++        # Force, not teleport: the front suspension unloads and the hull physically
++        # rotates onto the ledge. A tall obstacle still blocks the collision box.
++        apply_force(local_up * mass * 12.0 + forward * mass * 4.2, offset)
+         return
+ 
+-    var lift_speed := 5.8 + absf(current_speed) * 0.50
+-    global_position.y = move_toward(global_position.y, best_y, lift_speed * delta)
+-    _step_grace = 0.20
++func _update_stable_camera_pivot() -> void:
++    if _camera_yaw_root == null:
++        return
++    var forward := -global_basis.z
++    forward.y = 0.0
++    if forward.length_squared() < 0.0001:
++        forward = Vector3.FORWARD
++    else:
++        forward = forward.normalized()
++    var body_yaw := atan2(-forward.x, -forward.z)
++    _camera_yaw_root.global_position = global_position + Vector3.UP * (_camera_anchor_base.y + 0.30)
++    _camera_yaw_root.global_basis = Basis(Vector3.UP, body_yaw + turret_yaw)
+ 
+ func _remote_interpolation(delta: float) -> void:
+     if _has_target:
+         global_position = global_position.lerp(_target_position, clampf(delta * 10.0, 0.0, 1.0))
+-        rotation.y = lerp_angle(rotation.y, _target_yaw, clampf(delta * 12.0, 0.0, 1.0))
++        var current_q := global_basis.get_rotation_quaternion()
++        var blended := current_q.slerp(_target_rotation, clampf(delta * 12.0, 0.0, 1.0))
++        global_basis = Basis(blended)
+         turret_yaw = lerp_angle(turret_yaw, _target_turret, clampf(delta * 14.0, 0.0, 1.0))
+     _left_track_speed = lerpf(_left_track_speed, _target_left_track, clampf(delta * 8.0, 0.0, 1.0))
+     _right_track_speed = lerpf(_right_track_speed, _target_right_track, clampf(delta * 8.0, 0.0, 1.0))
+@@ -785,10 +909,14 @@
+ func _send_state() -> void:
+     if network == null:
+         return
++    var q := global_basis.get_rotation_quaternion().normalized()
+     network.send_state({
+         "slot":slot,
+         "p":_v3(global_position),
+-        "yaw":rotation.y,
++        "yaw":_body_heading_yaw(),
++        "rot":[q.x, q.y, q.z, q.w],
++        "lin_vel":_v3(linear_velocity),
++        "ang_vel":_v3(angular_velocity),
+         "turret":turret_yaw,
+         "speed":current_speed,
+         "left_track":_left_track_speed,
+@@ -796,65 +924,23 @@
+         "firing":firing
+     })
+ 
++func _body_heading_yaw() -> float:
++    var forward := -global_basis.z
++    forward.y = 0.0
++    if forward.length_squared() < 0.0001:
++        return 0.0
++    forward = forward.normalized()
++    return atan2(-forward.x, -forward.z)
++
+ func _v3(v: Vector3) -> Array:
+     return [snappedf(v.x, 0.001), snappedf(v.y, 0.001), snappedf(v.z, 0.001)]
+ 
+-func _ray_ground(world_point: Vector3) -> Dictionary:
+-    var query := PhysicsRayQueryParameters3D.create(
+-        world_point + Vector3.UP * float(_cfg()["ground_probe_height"]),
+-        world_point + Vector3.DOWN * float(_cfg()["ground_probe_depth"])
+-    )
+-    query.exclude = [get_rid()]
+-    return get_world_3d().direct_space_state.intersect_ray(query)
+-
+-func _stick_to_ground(delta: float) -> void:
+-    var center_hit := _ray_ground(global_position)
+-    if center_hit.is_empty():
+-        return
+-    var center_pos: Vector3 = center_hit["position"]
+-    var target_y := center_pos.y + 0.03
+-    if _step_grace > 0.0 and target_y < global_position.y:
+-        return
+-    global_position.y = lerpf(global_position.y, target_y, clampf(delta * 10.0, 0.0, 1.0))
+-
+ func _update_visual_pose(delta: float) -> void:
+     if _running_gear_root == null or _body_rock_root == null:
+         return
+-    var s: Vector3 = _cfg()["size"]
+-    var half_len := s.z * 0.33
+-    var half_w := s.x * 0.24
+-    var fl := _ray_ground(global_position + global_basis.x * -half_w + (-global_basis.z) * half_len)
+-    var fr := _ray_ground(global_position + global_basis.x * half_w + (-global_basis.z) * half_len)
+-    var rl := _ray_ground(global_position + global_basis.x * -half_w + global_basis.z * half_len)
+-    var rr := _ray_ground(global_position + global_basis.x * half_w + global_basis.z * half_len)
+-
+-    var target_pitch := 0.0
+-    var target_roll := 0.0
+-    if not (fl.is_empty() or fr.is_empty() or rl.is_empty() or rr.is_empty()):
+-        var fl_pos: Vector3 = fl["position"]
+-        var fr_pos: Vector3 = fr["position"]
+-        var rl_pos: Vector3 = rl["position"]
+-        var rr_pos: Vector3 = rr["position"]
+-        var front_y := (fl_pos.y + fr_pos.y) * 0.5
+-        var rear_y := (rl_pos.y + rr_pos.y) * 0.5
+-        var left_y := (fl_pos.y + rl_pos.y) * 0.5
+-        var right_y := (fr_pos.y + rr_pos.y) * 0.5
+-        var ground_pitch := atan2(front_y - rear_y, half_len * 2.0)
+-        var ground_roll := atan2(left_y - right_y, half_w * 2.0)
+-        # A rigid track mesh cannot physically wrap a sharp ledge. Limiting the
+-        # support-plane tilt lets the individual road wheels take the height
+-        # difference instead of driving the whole belt through the floor.
+-        target_pitch = clampf(-ground_pitch * 0.58, -0.22, 0.22)
+-        # Imported tank visuals use the opposite roll sign from the support-ray
+-        # convention above. Do not invert it here: a surface falling to the right
+-        # must make the right track/body side fall to the right as well.
+-        target_roll = clampf(ground_roll * 0.62, -0.16, 0.16)
+-
+-    _running_gear_root.rotation.x = lerp_angle(_running_gear_root.rotation.x, target_pitch, clampf(delta * 7.0, 0.0, 1.0))
+-    _running_gear_root.rotation.z = lerp_angle(_running_gear_root.rotation.z, target_roll, clampf(delta * 7.0, 0.0, 1.0))
+-
+-    # Acceleration/braking movement belongs only to the sprung mass. Tracks and
+-    # wheels stay on their terrain support plane.
++    # Terrain orientation now comes from the actual RigidBody3D. No support-plane
++    # rotation is painted onto the mesh, so collision, tracks and hull cannot disagree.
++    _running_gear_root.rotation = Vector3.ZERO
+     _body_rock_root.rotation.x = lerp_angle(_body_rock_root.rotation.x, _rock_pitch, clampf(delta * 10.0, 0.0, 1.0))
+     _body_rock_root.rotation.z = lerp_angle(_body_rock_root.rotation.z, 0.0, clampf(delta * 10.0, 0.0, 1.0))
+ 
+@@ -866,7 +952,14 @@
+     _update_wheel_side(_left_wheels, _left_track_speed, rest, travel, radius, bias_y, delta)
+     _update_wheel_side(_right_wheels, _right_track_speed, rest, travel, radius, bias_y, delta)
+ 
+-func _update_wheel_side(wheels: Array[Node3D], track_speed: float, rest: float, travel: float, radius: float, bias_y: float, delta: float) -> void:
++func _update_wheel_side(wheels: Array[Node3D], track_speed: float, _rest: float, travel: float, radius: float, bias_y: float, delta: float) -> void:
++    var up := global_basis.y.normalized()
++    var down := -up
++    var k: float = float(_cfg()["suspension_k"])
++    var total_wheels := max(1, _left_wheels.size() + _right_wheels.size())
++    var static_sag := (mass * WORLD_GRAVITY) / (float(total_wheels) * maxf(k, 1.0))
++    var max_len := radius + travel + static_sag
++    var space := get_world_3d().direct_space_state
+     for wheel in wheels:
+         if wheel == null:
+             continue
+@@ -878,13 +971,18 @@
+             continue
+         var parent_3d := parent_node as Node3D
+         var base_world := parent_3d.to_global(base_local)
+-        var hit := _ray_ground(base_world)
+-        var target_y := base_local.y + bias_y
++        var anchor_world := base_world + up * travel
++        var query := PhysicsRayQueryParameters3D.create(anchor_world, anchor_world + down * (max_len + 0.10))
++        query.exclude = [get_rid()]
++        var hit := space.intersect_ray(query)
++        var suspension_offset := -travel
+         if not hit.is_empty():
+             var hit_pos: Vector3 = hit["position"]
+-            var distance := base_world.y - hit_pos.y
+-            target_y = base_local.y + bias_y + clampf(rest - distance, -travel, travel)
+-        wheel.position.y = lerpf(wheel.position.y, target_y, clampf(delta * 10.0, 0.0, 1.0))
++            var distance := anchor_world.distance_to(hit_pos)
++            var compression := clampf(max_len - distance - static_sag, -travel, travel)
++            suspension_offset = compression
++        var target_y := base_local.y + bias_y + suspension_offset
++        wheel.position.y = lerpf(wheel.position.y, target_y, clampf(delta * 12.0, 0.0, 1.0))
+         var spin_value: float = float(_wheel_spin.get(key, 0.0))
+         spin_value += (track_speed * MAX_SPEED / maxf(radius, 0.01)) * delta
+         _wheel_spin[key] = spin_value
+--- a/client/scripts/main.gd
++++ b/client/scripts/main.gd
+@@ -254,8 +254,7 @@
+     _ensure_tank(net.player_id, slot_index, true)
+     var tank = tanks[net.player_id]
+     var spawn := _spawn_transform(slot_index)
+-    tank.global_position = spawn.origin
+-    tank.rotation.y = spawn.basis.get_euler().y
++    tank.teleport_spawn(spawn)
+ 
+ 
+ func _spawn_transform(slot_index: int) -> Transform3D:
+@@ -297,8 +296,7 @@
+     add_child(tank)
+     tank.configure(id, slot_index, is_local, net)
+     var spawn := _spawn_transform(slot_index)
+-    tank.global_position = spawn.origin
+-    tank.rotation.y = spawn.basis.get_euler().y
++    tank.teleport_spawn(spawn)
+     tanks[id] = tank
+     return tank
+ 
+--- a/server/server.py
++++ b/server/server.py
+@@ -126,9 +126,12 @@
+         client.slot = slot
+         slots[slot] = client.player_id
+         tank = TANKS[slot]
++        half_yaw = tank["yaw"] * 0.5
+         client.state = {
+-            "p": list(tank["spawn"]), "yaw": tank["yaw"], "turret":0.0,
+-            "speed":0.0, "left_track":0.0, "right_track":0.0, "firing":False
++            "p": list(tank["spawn"]), "yaw": tank["yaw"],
++            "rot":[0.0, math.sin(half_yaw), 0.0, math.cos(half_yaw)],
++            "lin_vel":[0.0,0.0,0.0], "ang_vel":[0.0,0.0,0.0],
++            "turret":0.0, "speed":0.0, "left_track":0.0, "right_track":0.0, "firing":False
+         }
+         client.last_position = list(tank["spawn"])
+         client.last_position_time = time.monotonic()
+@@ -157,10 +160,21 @@
+                 else:
+                     p = client.last_position
+             client.state["p"] = p
+-        for key, lo, hi in (("yaw",-10000,10000),("turret",-10000,10000),("speed",-12,12),("left_track",-1.2,1.2),("right_track",-1.2,1.2)):
++        for key, lo, hi in (("yaw",-10000,10000),("turret",-10000,10000),("speed",-18,18),("left_track",-1.2,1.2),("right_track",-1.2,1.2)):
+             v = finite_number(msg.get(key))
+             if v is not None:
+                 client.state[key] = min(hi,max(lo,v))
++        rot = vec4(msg.get("rot"))
++        if rot is not None:
++            norm = math.sqrt(sum(v*v for v in rot))
++            if 0.25 <= norm <= 2.0:
++                client.state["rot"] = [round(v/norm,5) for v in rot]
++        lin_vel = vec3(msg.get("lin_vel"))
++        if lin_vel is not None:
++            client.state["lin_vel"] = [min(60.0,max(-60.0,v)) for v in lin_vel]
++        ang_vel = vec3(msg.get("ang_vel"))
++        if ang_vel is not None:
++            client.state["ang_vel"] = [min(20.0,max(-20.0,v)) for v in ang_vel]
+         client.state["firing"] = bool(msg.get("firing", False)) and TANKS[client.slot]["weapon"] == "firebird"
+ 
+     def handle_shot(self, client: Client, msg: dict):
+@@ -210,6 +224,9 @@
+                 "id":c.player_id, "slot":c.slot,
+                 "p":st.get("p", TANKS[c.slot]["spawn"]),
+                 "yaw":st.get("yaw", TANKS[c.slot]["yaw"]),
++                "rot":st.get("rot"),
++                "lin_vel":st.get("lin_vel", [0.0,0.0,0.0]),
++                "ang_vel":st.get("ang_vel", [0.0,0.0,0.0]),
+                 "turret":st.get("turret",0.0),
+                 "speed":st.get("speed",0.0),
+                 "left_track":st.get("left_track", st.get("speed",0.0)/8.0),
+@@ -286,6 +303,17 @@
+     return out
+ 
+ 
++def vec4(value):
++    if not isinstance(value, list) or len(value) < 4:
++        return None
++    out=[]
++    for x in value[:4]:
++        v=finite_number(x)
++        if v is None: return None
++        out.append(round(v,5))
++    return out
++
++
+ async def amain(args):
+     loop=asyncio.get_running_loop()
+     transport,_=await loop.create_datagram_endpoint(

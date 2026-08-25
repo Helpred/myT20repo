@@ -1,0 +1,39 @@
+# Godot generated files
+.godot/
+**/.godot/
+
+# Python cache
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Logs / temporary files
+*.log
+*.tmp
+
+# Backup files
+*.bak
+*.bak_*
+*.bak*
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Project backups
+_backup*/
+**/_backup*/
+*_backup
+*_backup_*
+*_backup*
+
+# Built releases
+client/releases/

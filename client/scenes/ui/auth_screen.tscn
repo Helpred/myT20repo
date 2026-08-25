@@ -1,0 +1,354 @@
+[gd_scene format=3 uid="uid://obnrbv8yl773"]
+
+[ext_resource type="Texture2D" uid="uid://bywos6rd1piyv" path="res://assets/ui/legacy/bg.png" id="1_bg"]
+[ext_resource type="Texture2D" uid="uid://c1dj7chdog2sx" path="res://assets/ui/legacy/window_bg.jpg" id="2_window"]
+[ext_resource type="Texture2D" uid="uid://fpm3vrnnh6p0" path="res://assets/ui/legacy/button_normal.png" id="4_btn_n"]
+[ext_resource type="Texture2D" uid="uid://bodws6osbnakv" path="res://assets/ui/legacy/button_hover.png" id="5_btn_h"]
+[ext_resource type="Texture2D" uid="uid://vsqeadw166eh" path="res://assets/ui/legacy/button_pressed.png" id="6_btn_p"]
+[ext_resource type="Texture2D" uid="uid://4bvc4v6rcu5p" path="res://assets/ui/legacy/big_normal.png" id="7_big_n"]
+[ext_resource type="Texture2D" uid="uid://co572ovce3prd" path="res://assets/ui/legacy/big_hover.png" id="8_big_h"]
+[ext_resource type="Texture2D" uid="uid://ccf4h13w6hfly" path="res://assets/ui/legacy/big_pressed.png" id="9_big_p"]
+[ext_resource type="Texture2D" uid="uid://dy7yyda4j62nx" path="res://assets/ui/legacy/input.png" id="10_input"]
+[ext_resource type="Texture2D" uid="uid://cn1rgui3pmkh7" path="res://assets/ui/legacy/title_login.png" id="11_title"]
+
+[sub_resource type="StyleBoxTexture" id="StyleWindow"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+texture = ExtResource("2_window")
+
+[sub_resource type="StyleBoxTexture" id="StyleInput"]
+content_margin_left = 9.0
+content_margin_top = 5.0
+content_margin_right = 9.0
+content_margin_bottom = 5.0
+texture = ExtResource("10_input")
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBigNormal"]
+content_margin_left = 9.0
+content_margin_top = 5.0
+content_margin_right = 9.0
+content_margin_bottom = 5.0
+texture = ExtResource("7_big_n")
+texture_margin_left = 7.0
+texture_margin_top = 5.0
+texture_margin_right = 7.0
+texture_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBigPressed"]
+content_margin_left = 9.0
+content_margin_top = 5.0
+content_margin_right = 9.0
+content_margin_bottom = 5.0
+texture = ExtResource("9_big_p")
+texture_margin_left = 7.0
+texture_margin_top = 5.0
+texture_margin_right = 7.0
+texture_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBigHover"]
+content_margin_left = 9.0
+content_margin_top = 5.0
+content_margin_right = 9.0
+content_margin_bottom = 5.0
+texture = ExtResource("8_big_h")
+texture_margin_left = 7.0
+texture_margin_top = 5.0
+texture_margin_right = 7.0
+texture_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="StyleButtonNormal"]
+content_margin_left = 9.0
+content_margin_top = 5.0
+content_margin_right = 9.0
+content_margin_bottom = 5.0
+texture = ExtResource("4_btn_n")
+texture_margin_left = 7.0
+texture_margin_top = 5.0
+texture_margin_right = 7.0
+texture_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="StyleButtonPressed"]
+content_margin_left = 9.0
+content_margin_top = 5.0
+content_margin_right = 9.0
+content_margin_bottom = 5.0
+texture = ExtResource("6_btn_p")
+texture_margin_left = 7.0
+texture_margin_top = 5.0
+texture_margin_right = 7.0
+texture_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="StyleButtonHover"]
+content_margin_left = 9.0
+content_margin_top = 5.0
+content_margin_right = 9.0
+content_margin_bottom = 5.0
+texture = ExtResource("5_btn_h")
+texture_margin_left = 7.0
+texture_margin_top = 5.0
+texture_margin_right = 7.0
+texture_margin_bottom = 5.0
+
+[node name="AuthScreen" type="Control" unique_id=690508698]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="TextureRect" parent="." unique_id=448454724]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("1_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Center" type="CenterContainer" parent="." unique_id=1180282307]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Window" type="PanelContainer" parent="Center" unique_id=2064042949]
+custom_minimum_size = Vector2(490, 485)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleWindow")
+
+[node name="Margin" type="MarginContainer" parent="Center/Window" unique_id=993932099]
+layout_mode = 2
+theme_override_constants/margin_left = 22
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 22
+theme_override_constants/margin_bottom = 18
+
+[node name="Box" type="VBoxContainer" parent="Center/Window/Margin" unique_id=681976191]
+layout_mode = 2
+theme_override_constants/separation = 9
+alignment = 1
+
+[node name="TitleSlot" type="Control" parent="Center/Window/Margin/Box" unique_id=1390270626]
+custom_minimum_size = Vector2(99, 17)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Title" type="TextureRect" parent="Center/Window/Margin/Box/TitleSlot" unique_id=1649098695]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("11_title")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Subtitle" type="Label" parent="Center/Window/Margin/Box" unique_id=2005370405]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.66, 0.67, 0.64, 1)
+theme_override_font_sizes/font_size = 11
+text = "TANKI 2.0 • multiplayer"
+horizontal_alignment = 1
+
+[node name="LoginSlot" type="Control" parent="Center/Window/Margin/Box" unique_id=272122739]
+custom_minimum_size = Vector2(280, 31)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Login" type="LineEdit" parent="Center/Window/Margin/Box/LoginSlot" unique_id=192533810]
+custom_minimum_size = Vector2(280, 31)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.93, 0.93, 0.91, 1)
+theme_override_colors/font_placeholder_color = Color(0.55, 0.55, 0.53, 1)
+theme_override_styles/normal = SubResource("StyleInput")
+theme_override_styles/focus = SubResource("StyleInput")
+placeholder_text = "Логин"
+
+[node name="PasswordSlot" type="Control" parent="Center/Window/Margin/Box" unique_id=1754020422]
+custom_minimum_size = Vector2(280, 31)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Password" type="LineEdit" parent="Center/Window/Margin/Box/PasswordSlot" unique_id=876572065]
+custom_minimum_size = Vector2(280, 31)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.93, 0.93, 0.91, 1)
+theme_override_colors/font_placeholder_color = Color(0.55, 0.55, 0.53, 1)
+theme_override_styles/normal = SubResource("StyleInput")
+theme_override_styles/focus = SubResource("StyleInput")
+placeholder_text = "Пароль"
+secret = true
+
+[node name="RepeatSlot" type="Control" parent="Center/Window/Margin/Box" unique_id=40686984]
+custom_minimum_size = Vector2(280, 31)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Repeat" type="LineEdit" parent="Center/Window/Margin/Box/RepeatSlot" unique_id=981983421]
+custom_minimum_size = Vector2(280, 31)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.93, 0.93, 0.91, 1)
+theme_override_colors/font_placeholder_color = Color(0.55, 0.55, 0.53, 1)
+theme_override_styles/normal = SubResource("StyleInput")
+theme_override_styles/focus = SubResource("StyleInput")
+placeholder_text = "Повтор пароля (для регистрации)"
+secret = true
+
+[node name="Endpoint" type="HBoxContainer" parent="Center/Window/Margin/Box" unique_id=735920665]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="HostSlot" type="Control" parent="Center/Window/Margin/Box/Endpoint" unique_id=1023154128]
+custom_minimum_size = Vector2(205, 31)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Host" type="LineEdit" parent="Center/Window/Margin/Box/Endpoint/HostSlot" unique_id=1500239703]
+custom_minimum_size = Vector2(205, 31)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.93, 0.93, 0.91, 1)
+theme_override_colors/font_placeholder_color = Color(0.55, 0.55, 0.53, 1)
+theme_override_styles/normal = SubResource("StyleInput")
+theme_override_styles/focus = SubResource("StyleInput")
+placeholder_text = "Host"
+
+[node name="PortSlot" type="Control" parent="Center/Window/Margin/Box/Endpoint" unique_id=1565680560]
+custom_minimum_size = Vector2(90, 31)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Port" type="LineEdit" parent="Center/Window/Margin/Box/Endpoint/PortSlot" unique_id=402718479]
+custom_minimum_size = Vector2(90, 31)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.93, 0.93, 0.91, 1)
+theme_override_colors/font_placeholder_color = Color(0.55, 0.55, 0.53, 1)
+theme_override_styles/normal = SubResource("StyleInput")
+theme_override_styles/focus = SubResource("StyleInput")
+placeholder_text = "Port"
+
+[node name="EnterSlot" type="Control" parent="Center/Window/Margin/Box" unique_id=1505748984]
+custom_minimum_size = Vector2(180, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Enter" type="Button" parent="Center/Window/Margin/Box/EnterSlot" unique_id=409378404]
+custom_minimum_size = Vector2(180, 48)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.88, 0.88, 0.86, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 13
+theme_override_styles/normal = SubResource("StyleBigNormal")
+theme_override_styles/pressed = SubResource("StyleBigPressed")
+theme_override_styles/hover = SubResource("StyleBigHover")
+text = "ВОЙТИ В ИГРУ"
+
+[node name="Actions" type="HBoxContainer" parent="Center/Window/Margin/Box" unique_id=1724824287]
+layout_mode = 2
+theme_override_constants/separation = 7
+
+[node name="RegisterSlot" type="Control" parent="Center/Window/Margin/Box/Actions" unique_id=1156806342]
+custom_minimum_size = Vector2(180, 31)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Register" type="Button" parent="Center/Window/Margin/Box/Actions/RegisterSlot" unique_id=1833338045]
+custom_minimum_size = Vector2(180, 31)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleButtonNormal")
+theme_override_styles/pressed = SubResource("StyleButtonPressed")
+theme_override_styles/hover = SubResource("StyleButtonHover")
+text = "РЕГИСТРАЦИЯ"
+
+[node name="ReconnectSlot" type="Control" parent="Center/Window/Margin/Box/Actions" unique_id=742014335]
+custom_minimum_size = Vector2(180, 31)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Reconnect" type="Button" parent="Center/Window/Margin/Box/Actions/ReconnectSlot" unique_id=1533429754]
+custom_minimum_size = Vector2(180, 31)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleButtonNormal")
+theme_override_styles/pressed = SubResource("StyleButtonPressed")
+theme_override_styles/hover = SubResource("StyleButtonHover")
+text = "ПЕРЕПОДКЛЮЧИТЬСЯ"
+
+[node name="Status" type="Label" parent="Center/Window/Margin/Box" unique_id=430930750]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.66, 0.67, 0.64, 1)
+theme_override_font_sizes/font_size = 11
+text = "Введите данные аккаунта и подключитесь к серверу."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="FreeCanvas" type="Control" parent="." unique_id=1148626300]
+editor_description = "Свободный 2D-слой. Сюда можно перетаскивать визуальные узлы из *Slot, чтобы Position/Size полностью редактировались вручную. Не переименовывайте функциональные узлы."
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

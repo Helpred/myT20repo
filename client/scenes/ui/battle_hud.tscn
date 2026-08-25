@@ -1,0 +1,215 @@
+[gd_scene format=3]
+
+[sub_resource type="StyleBoxFlat" id="LeaderPanel"]
+bg_color = Color(0.07, 0.073, 0.06, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.29, 0.27, 0.18, 0.96)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="KillBackground"]
+bg_color = Color(0.075, 0.07, 0.05, 0.94)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.29, 0.27, 0.18, 0.96)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="KillFill"]
+bg_color = Color(0.25, 0.47, 0.055, 0.98)
+border_width_top = 1
+border_width_bottom = 1
+border_color = Color(0.39, 0.62, 0.1, 0.98)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="SuppliesPanel"]
+bg_color = Color(0.075, 0.058, 0.05, 0.62)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.46, 0.36, 0.27, 0.85)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="BattleHUD" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+visible = false
+mouse_filter = 2
+
+[node name="ActionFeed" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 104.0
+offset_right = 524.0
+offset_bottom = 254.0
+theme_override_constants/separation = 2
+mouse_filter = 2
+
+[node name="GoldNotice" type="Label" parent="."]
+layout_mode = 1
+anchor_left = 0.18
+anchor_right = 0.82
+offset_top = 18.0
+offset_bottom = 48.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.98)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 19
+horizontal_alignment = 1
+vertical_alignment = 1
+visible = false
+mouse_filter = 2
+
+[node name="HudCluster" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -222.0
+offset_top = 14.0
+offset_right = -14.0
+offset_bottom = 84.0
+theme_override_constants/separation = 4
+mouse_filter = 2
+
+[node name="TopRow" type="HBoxContainer" parent="HudCluster"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="LeaderPanel" type="PanelContainer" parent="HudCluster/TopRow"]
+custom_minimum_size = Vector2(78, 30)
+layout_mode = 2
+theme_override_styles/panel = SubResource("LeaderPanel")
+
+[node name="LeaderKills" type="Label" parent="HudCluster/TopRow/LeaderPanel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94, 0.94, 0.88, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.95)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 14
+text = "⬆ 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+mouse_filter = 2
+
+[node name="KillFrame" type="Control" parent="HudCluster/TopRow"]
+custom_minimum_size = Vector2(126, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="KillProgress" type="ProgressBar" parent="HudCluster/TopRow/KillFrame"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+min_value = 0.0
+max_value = 15.0
+show_percentage = false
+theme_override_styles/background = SubResource("KillBackground")
+theme_override_styles/fill = SubResource("KillFill")
+
+[node name="Kills" type="Label" parent="HudCluster/TopRow/KillFrame"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.94, 0.94, 0.88, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.95)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 14
+text = "☠ 0 / 15"
+horizontal_alignment = 1
+vertical_alignment = 1
+mouse_filter = 2
+
+[node name="FundPanel" type="PanelContainer" parent="HudCluster"]
+custom_minimum_size = Vector2(126, 28)
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_styles/panel = SubResource("KillBackground")
+
+[node name="Fund" type="Label" parent="HudCluster/FundPanel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94, 0.94, 0.88, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.95)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 14
+text = "💰 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+mouse_filter = 2
+
+[node name="BattleRank" type="Label" parent="."]
+visible = false
+
+[node name="BattleCrystals" type="Label" parent="."]
+visible = false
+
+[node name="BattleScore" type="Label" parent="."]
+visible = false
+
+[node name="Supplies" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(380, 72)
+layout_mode = 0
+offset_left = 12.0
+offset_top = 625.0
+offset_right = 392.0
+offset_bottom = 697.0
+theme_override_styles/panel = SubResource("SuppliesPanel")
+
+[node name="Box" type="VBoxContainer" parent="Supplies"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Supplies/Box"]
+layout_mode = 2
+text = "ПРИПАСЫ"
+
+[node name="SuppliesText" type="Label" parent="Supplies/Box"]
+layout_mode = 2
+text = "[+] +75% HP     [БРОНЯ] —     [УРОН] —     [НИТРО] —"
+
+[node name="Hint" type="Label" parent="."]
+layout_mode = 0
+offset_left = 430.0
+offset_top = 676.0
+offset_right = 1260.0
+offset_bottom = 710.0
+text = "W/S движение • A/D поворот • Z/X башня • C автовозврат • DELETE самоуничтожение • SPACE огонь • ESC выход"
+mouse_filter = 2
+
+[node name="FreeCanvas" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+editor_description = "Свободный 2D-слой. Сюда можно перетаскивать визуальные узлы из *Slot, чтобы Position/Size полностью редактировались вручную. Не переименовывайте функциональные узлы."

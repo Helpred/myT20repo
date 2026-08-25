@@ -1,0 +1,647 @@
+[gd_scene format=3 uid="uid://dgrsr2lsbtbsr"]
+
+[ext_resource type="PackedScene" uid="uid://ce6wrqrbpvpwn" path="res://assets/maps/arena/arena_visual_editor.gltf" id="1_visual"]
+[ext_resource type="ArrayMesh" uid="uid://cjq7wcgt5ye82" path="res://assets/maps/arena/arena_physics.obj" id="3_physics"]
+[ext_resource type="Texture2D" uid="uid://cypg71ap1d3ii" path="res://assets/maps/arena/skybox/arena_panorama.jpg" id="4_panorama"]
+[ext_resource type="LightmapGIData" uid="uid://3kjvttw4l5b" path="res://scenes/maps/arena_editable.lmbake" id="5_fuekp"]
+[ext_resource type="Script" uid="uid://4uetf2wdgwlf" path="res://scripts/arena_editable_runtime.gd" id="5_runtime"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_arena"]
+panorama = ExtResource("4_panorama")
+
+[sub_resource type="Sky" id="Sky_arena"]
+sky_material = SubResource("PanoramaSkyMaterial_arena")
+
+[sub_resource type="Environment" id="Environment_arena"]
+background_mode = 2
+sky = SubResource("Sky_arena")
+ambient_light_source = 2
+ambient_light_color = Color(0.317647, 0.270588, 0.219608, 1)
+ambient_light_energy = 0.18
+reflected_light_source = 1
+fog_enabled = true
+fog_light_color = Color(0.19038504, 0.16461459, 0.13664839, 1)
+fog_light_energy = 0.1
+fog_sky_affect = 0.0
+volumetric_fog_density = 0.0
+
+[node name="ArenaEditable" type="Node3D" unique_id=1370083157]
+script = ExtResource("5_runtime")
+
+[node name="Environment" type="WorldEnvironment" parent="." unique_id=371225799]
+environment = SubResource("Environment_arena")
+
+[node name="Geometry" type="Node3D" parent="." unique_id=47403433]
+
+[node name="OriginalArena_DO_NOT_MOVE" parent="Geometry" unique_id=258031467 instance=ExtResource("1_visual")]
+
+[node name="Collision" type="Node3D" parent="." unique_id=447768863]
+
+[node name="PhysicsMesh" type="MeshInstance3D" parent="Collision" unique_id=1335123150]
+visible = false
+mesh = ExtResource("3_physics")
+
+[node name="Lighting" type="Node3D" parent="." unique_id=1377381129]
+
+[node name="MidLight_1" type="SpotLight3D" parent="Lighting" unique_id=992682080]
+transform = Transform3D(0.88344085, -0.249687, 0.39647013, 0.19119126, 0.96463084, 0.18147539, -0.42775935, -0.08452118, 0.89993227, -4.806694, 16.830744, -5.266004)
+light_energy = 5.0
+light_indirect_energy = 8.0
+light_specular = 0.0
+light_bake_mode = 1
+shadow_enabled = true
+shadow_blur = 2.089
+spot_range = 100.76259
+spot_angle = 59.992764
+
+[node name="MidLight_2" type="SpotLight3D" parent="Lighting" unique_id=1155584150]
+transform = Transform3D(-0.88855845, -0.088819504, -0.45008317, -0.33724153, 0.79158163, 0.5095747, 0.3110175, 0.6045737, -0.7333203, -30.785625, 16.433594, -63.888374)
+light_energy = 5.0
+light_indirect_energy = 8.0
+light_specular = 0.0
+light_bake_mode = 1
+shadow_enabled = true
+shadow_blur = 2.089
+spot_range = 100.76259
+spot_angle = 59.992764
+
+[node name="Side_light_1" type="SpotLight3D" parent="Lighting" unique_id=798175712]
+transform = Transform3D(0.8834409, -0.24968705, 0.3964702, 0.013238803, 0.8591417, 0.5115665, -0.46835557, -0.44669, 0.7623065, 20.4274, 23.535868, 47.66121)
+light_energy = 5.0
+light_indirect_energy = 8.0
+light_specular = 0.0
+light_bake_mode = 1
+shadow_enabled = true
+shadow_blur = 2.089
+spot_range = 100.78929
+spot_angle = 59.992764
+
+[node name="Side_light_2" type="SpotLight3D" parent="Lighting" unique_id=1095223873]
+transform = Transform3D(0.92897457, 0.17869711, -0.32415074, 0.013238746, 0.85914165, 0.51156646, 0.36990702, -0.47952354, 0.7957549, -54.547752, 23.243193, 48.059322)
+light_energy = 5.0
+light_indirect_energy = 8.0
+light_specular = 0.0
+light_bake_mode = 1
+shadow_enabled = true
+shadow_blur = 2.089
+spot_range = 100.78929
+spot_angle = 59.992764
+
+[node name="Side_light_3" type="SpotLight3D" parent="Lighting" unique_id=733831923]
+transform = Transform3D(0.28700882, 0.486818, -0.8250056, 0.013238732, 0.85914177, 0.5115665, 0.95783645, -0.15774614, 0.24013638, -98.64748, 22.944975, 3.7234793)
+light_energy = 5.0
+light_indirect_energy = 8.0
+light_specular = 0.0
+light_bake_mode = 1
+shadow_enabled = true
+shadow_blur = 2.089
+spot_range = 100.78929
+spot_angle = 59.992764
+
+[node name="Side_light_4" type="SpotLight3D" parent="Lighting" unique_id=1661800409]
+transform = Transform3D(-0.40671742, 0.47200328, -0.78217256, 0.013238728, 0.8591419, 0.5115666, 0.9134582, 0.19770804, -0.35567668, -98.64748, 23.917181, -73.27856)
+light_energy = 5.0
+light_indirect_energy = 8.0
+light_specular = 0.0
+light_bake_mode = 1
+shadow_enabled = true
+shadow_blur = 2.089
+spot_range = 100.78929
+spot_angle = 59.992764
+
+[node name="Side_light_5" type="SpotLight3D" parent="Lighting" unique_id=2036865142]
+transform = Transform3D(-0.97184527, 0.1314216, -0.19556366, 0.013238714, 0.85914177, 0.51156646, 0.23524779, 0.49457437, -0.8366927, -54.75841, 23.917181, -116.54259)
+light_energy = 5.0
+light_indirect_energy = 8.0
+light_specular = 0.0
+light_bake_mode = 1
+shadow_enabled = true
+shadow_blur = 2.089
+spot_range = 100.78929
+spot_angle = 59.992764
+
+[node name="Side_light_6" type="SpotLight3D" parent="Lighting" unique_id=1197979124]
+transform = Transform3D(-0.9488658, -0.15058315, 0.2774499, 0.013238714, 0.85914177, 0.5115664, -0.31540206, 0.48908094, -0.8132167, 21.74187, 23.917181, -116.54259)
+light_energy = 5.0
+light_indirect_energy = 8.0
+light_specular = 0.0
+light_bake_mode = 1
+shadow_enabled = true
+shadow_blur = 2.089
+spot_range = 100.78929
+spot_angle = 59.992764
+
+[node name="Side_light_7" type="SpotLight3D" parent="Lighting" unique_id=1952032482]
+transform = Transform3D(-0.4436492, -0.4534495, 0.77301943, 0.013238728, 0.85914177, 0.5115664, -0.8961027, 0.23718983, -0.37515444, 85.994705, 23.917181, -82.60574)
+light_energy = 5.0
+light_indirect_energy = 8.0
+light_specular = 0.0
+light_bake_mode = 1
+shadow_enabled = true
+shadow_blur = 2.089
+spot_range = 346.8555
+spot_angle = 70.7404
+
+[node name="Side_light_8" type="SpotLight3D" parent="Lighting" unique_id=1045613636]
+transform = Transform3D(0.5013719, -0.44835296, 0.740004, 0.013238726, 0.85914177, 0.5115665, -0.86513054, -0.24668837, 0.4366852, 85.994705, 23.917181, -4.9908905)
+light_energy = 5.0
+light_indirect_energy = 8.0
+light_specular = 0.0
+light_bake_mode = 1
+shadow_enabled = true
+shadow_blur = 2.089
+spot_range = 346.8555
+spot_angle = 70.7404
+
+[node name="wall_blue_1" type="OmniLight3D" parent="Lighting" unique_id=1276560471]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -91.65265, 4.569254, 19.738773)
+light_color = Color(0.3019608, 1, 1, 1)
+light_energy = 0.525
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 4.1177464
+
+[node name="wall_blue_2" type="OmniLight3D" parent="Lighting" unique_id=465931665]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -91.65265, 4.569254, 0.70835114)
+light_color = Color(0.3019608, 1, 1, 1)
+light_energy = 0.525
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 4.1177464
+
+[node name="wall_blue_3" type="OmniLight3D" parent="Lighting" unique_id=724411075]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -91.65265, 4.569254, -65.69056)
+light_color = Color(0.3019608, 1, 1, 1)
+light_energy = 0.525
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 4.1177464
+
+[node name="wall_blue_4" type="OmniLight3D" parent="Lighting" unique_id=1942017929]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -91.65265, 4.569254, -84.8353)
+light_color = Color(0.3019608, 1, 1, 1)
+light_energy = 0.525
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 4.1177464
+
+[node name="wall_blue_5" type="OmniLight3D" parent="Lighting" unique_id=935324551]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -91.65265, 4.569254, -104.10344)
+light_color = Color(0.3019608, 1, 1, 1)
+light_energy = 0.525
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 4.1177464
+
+[node name="wall_blue_6" type="OmniLight3D" parent="Lighting" unique_id=713553611]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -71.374405, 4.569254, -108.48593)
+light_color = Color(0.3019608, 1, 1, 1)
+light_energy = 0.525
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 4.1177464
+
+[node name="wall_blue_7" type="OmniLight3D" parent="Lighting" unique_id=2080635372]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -52.258293, 4.569254, -108.48593)
+light_color = Color(0.3019608, 1, 1, 1)
+light_energy = 0.525
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 4.1177464
+
+[node name="wall_blue_8" type="OmniLight3D" parent="Lighting" unique_id=278608373]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.203595, 4.569254, -108.48593)
+light_color = Color(0.3019608, 1, 1, 1)
+light_energy = 0.525
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 4.1177464
+
+[node name="wall_blue_9" type="OmniLight3D" parent="Lighting" unique_id=1245309155]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.25401, 4.569254, -108.48593)
+light_color = Color(0.3019608, 1, 1, 1)
+light_energy = 0.525
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 4.1177464
+
+[node name="wall_blue_10" type="OmniLight3D" parent="Lighting" unique_id=166576545]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52.353657, 4.569254, -108.48593)
+light_color = Color(0.3019608, 1, 1, 1)
+light_energy = 0.525
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 4.1177464
+
+[node name="wall_white_1" type="OmniLight3D" parent="Lighting" unique_id=725291616]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 70.676506, 6.322236, -101.04096)
+light_energy = 1.159
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 9.231688
+
+[node name="wall_white_2" type="OmniLight3D" parent="Lighting" unique_id=658078729]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 70.676506, 6.322236, -73.13702)
+light_energy = 1.159
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 9.231688
+
+[node name="wall_white_3" type="OmniLight3D" parent="Lighting" unique_id=867647947]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 70.676506, 6.322236, -45.77356)
+light_energy = 1.159
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 9.231688
+
+[node name="wall_white_4" type="OmniLight3D" parent="Lighting" unique_id=1157332737]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 65.52246, 6.322236, -14.509003)
+light_energy = 1.159
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 9.231688
+
+[node name="floor_red_1" type="OmniLight3D" parent="Lighting" unique_id=171315672]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -81.95896, 0.46227908, 24.512074)
+light_color = Color(1, 0.05490196, 0, 1)
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 5.980371
+
+[node name="floor_red_2" type="OmniLight3D" parent="Lighting" unique_id=226643230]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -81.95896, 0.46227908, 37.48671)
+light_color = Color(1, 0.05490196, 0, 1)
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 5.980371
+
+[node name="floor_red_3" type="OmniLight3D" parent="Lighting" unique_id=708160257]
+transform = Transform3D(0.0004646341, 0, -0.9999999, 0, 1, 0, 0.9999999, 0, 0.0004646341, -75.47164, 0.46227908, 30.996378)
+light_color = Color(1, 0.05490196, 0, 1)
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 5.980371
+
+[node name="floor_red_4" type="OmniLight3D" parent="Lighting" unique_id=1830783120]
+transform = Transform3D(0.0004646341, 0, -0.9999999, 0, 1, 0, 0.9999999, 0, 0.0004646341, -88.44628, 0.46227908, 31.002405)
+light_color = Color(1, 0.05490196, 0, 1)
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 5.980371
+
+[node name="EKRAN_1" type="SpotLight3D" parent="Lighting" unique_id=1132670690]
+transform = Transform3D(0.9998761, -0.0070116185, -0.014100128, 0.009814967, 0.9776895, 0.20982549, 0.0123143345, -0.20993778, 0.9776372, -13.158943, 14.26507, 49.235966)
+light_color = Color(0, 1, 1, 1)
+light_energy = 8.129
+light_specular = 0.0
+light_bake_mode = 1
+shadow_enabled = true
+spot_range = 59.995056
+spot_angle = 87.21997
+
+[node name="EKRAN_1_rev" type="SpotLight3D" parent="Lighting" unique_id=52385146]
+transform = Transform3D(-0.9972869, -0.005738598, 0.07338917, -0.0017194152, 0.99850076, 0.05471167, -0.07359311, 0.05443704, -0.99580157, -14.025949, 15.751574, 42.576923)
+light_color = Color(0, 1, 1, 1)
+light_energy = 8.129
+light_specular = 0.0
+light_bake_mode = 1
+shadow_enabled = true
+spot_range = 24.892546
+spot_angle = 89.99
+
+[node name="EKRAN_2" type="SpotLight3D" parent="Lighting" unique_id=1568985312]
+transform = Transform3D(-0.99995005, 0.009195932, 0.0039256895, 0.009814967, 0.9776896, 0.2098255, -0.0019085648, 0.20985353, -0.97773105, -16.982185, 14.26507, -115.95859)
+light_color = Color(0, 1, 1, 1)
+light_energy = 8.129
+light_specular = 0.0
+light_bake_mode = 1
+shadow_enabled = true
+spot_range = 59.995056
+spot_angle = 87.21997
+
+[node name="EKRAN_1_rev2" type="SpotLight3D" parent="Lighting" unique_id=1961818981]
+transform = Transform3D(0.9979988, 0.005171793, -0.0630225, -0.0017194147, 0.99850076, 0.054711673, 0.063210964, -0.05449381, 0.9965114, -16.04593, 15.751574, -109.30893)
+light_color = Color(0, 1, 1, 1)
+light_energy = 8.129
+light_specular = 0.0
+light_bake_mode = 1
+shadow_enabled = true
+spot_range = 24.892546
+spot_angle = 89.99
+
+[node name="EKRAN_3" type="SpotLight3D" parent="Lighting" unique_id=409103181]
+transform = Transform3D(-0.02112414, 0.20999147, -0.977475, 0.009814968, 0.9776896, 0.20982547, 0.99972886, -0.005161509, -0.022713892, -99.34066, 14.26507, -34.28787)
+light_color = Color(0, 1, 1, 1)
+light_energy = 8.129
+light_specular = 0.0
+light_bake_mode = 1
+shadow_enabled = true
+spot_range = 59.995056
+spot_angle = 87.21997
+
+[node name="EKRAN_1_rev3" type="SpotLight3D" parent="Lighting" unique_id=1518547]
+transform = Transform3D(0.08237772, -0.054384355, 0.99511623, -0.001719415, 0.99850076, 0.054711662, -0.99659973, -0.0062180376, 0.08216068, -92.67423, 15.751574, -35.096165)
+light_color = Color(0, 1, 1, 1)
+light_energy = 8.129
+light_specular = 0.0
+light_bake_mode = 1
+shadow_enabled = true
+spot_range = 24.892546
+spot_angle = 89.99
+
+[node name="Single_light_1" type="SpotLight3D" parent="Lighting" unique_id=881230098]
+transform = Transform3D(0.61897403, 0.39476216, -0.6789949, -0.0996731, 0.8970001, 0.43064624, 0.7790613, -0.19888133, 0.5945669, -101.57502, 13.605471, 53.4654)
+light_energy = 8.129
+light_specular = 0.0
+light_bake_mode = 1
+shadow_enabled = true
+spot_range = 70.76742
+spot_angle = 16.155443
+
+[node name="Single_light_2" type="SpotLight3D" parent="Lighting" unique_id=2058366077]
+transform = Transform3D(0.9917431, 0.12465642, -0.030109962, -0.11779575, 0.9783134, 0.17037335, 0.050695095, -0.1654197, 0.9849196, 45.290302, 5.2639484, 45.756462)
+light_energy = 8.129
+light_specular = 0.0
+light_bake_mode = 1
+shadow_enabled = true
+spot_range = 64.57205
+spot_angle = 25.749502
+
+[node name="Props" type="Node3D" parent="." unique_id=1483401591]
+
+[node name="ChemicalPools" type="Node3D" parent="." unique_id=845959436]
+
+[node name="Pool_03" type="Node3D" parent="ChemicalPools" unique_id=605428821]
+transform = Transform3D(0.86602527, 0, -0.50000024, 0, 1, 0, 0.50000024, 0, 0.86602527, -17.359957, 1.2855955, -33.764214)
+
+[node name="Glow_mid" type="OmniLight3D" parent="ChemicalPools/Pool_03" unique_id=742891727]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.33449173, 2.035894, -0.19311905)
+light_color = Color(0.28, 0.95, 0.36, 1)
+light_energy = 5.0
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 7.2
+
+[node name="Glow_side_1" type="OmniLight3D" parent="ChemicalPools/Pool_03" unique_id=613188807]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6937027, -3.8976188, -56.970226)
+light_color = Color(0.28, 0.95, 0.36, 1)
+light_energy = 5.0
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 11.637651
+
+[node name="Glow_side_16" type="OmniLight3D" parent="ChemicalPools/Pool_03" unique_id=200870248]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.0336685, -3.8976188, -53.309834)
+light_color = Color(0.28, 0.95, 0.36, 1)
+light_energy = 5.0
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 11.637651
+
+[node name="Glow_side_2" type="OmniLight3D" parent="ChemicalPools/Pool_03" unique_id=1576414247]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48.349358, -3.8976188, 29.331896)
+light_color = Color(0.28, 0.95, 0.36, 1)
+light_energy = 5.0
+light_indirect_energy = 5.277
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 11.637651
+
+[node name="Glow_side_11" type="OmniLight3D" parent="ChemicalPools/Pool_03" unique_id=485836988]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.66521, -3.8976188, 34.444427)
+light_color = Color(0.28, 0.95, 0.36, 1)
+light_energy = 5.0
+light_indirect_energy = 5.277
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 11.637651
+
+[node name="Glow_side_3" type="OmniLight3D" parent="ChemicalPools/Pool_03" unique_id=324516382]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.113289, -3.8976188, 51.991962)
+light_color = Color(0.28, 0.95, 0.36, 1)
+light_energy = 5.0
+light_indirect_energy = 5.277
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 11.637651
+
+[node name="Glow_side_12" type="OmniLight3D" parent="ChemicalPools/Pool_03" unique_id=1143449729]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2815475, -3.8976188, 56.513622)
+light_color = Color(0.28, 0.95, 0.36, 1)
+light_energy = 5.0
+light_indirect_energy = 5.277
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 11.637651
+
+[node name="Glow_side_4" type="OmniLight3D" parent="ChemicalPools/Pool_03" unique_id=928954037]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 57.041626, -3.8976188, -2.2698421)
+light_color = Color(0.28, 0.95, 0.36, 1)
+light_energy = 5.0
+light_indirect_energy = 5.277
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 11.637651
+
+[node name="Glow_side_10" type="OmniLight3D" parent="ChemicalPools/Pool_03" unique_id=550957542]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 51.931824, -3.8976188, -11.120274)
+light_color = Color(0.28, 0.95, 0.36, 1)
+light_energy = 5.0
+light_indirect_energy = 5.277
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 11.637651
+
+[node name="Glow_side_5" type="OmniLight3D" parent="ChemicalPools/Pool_03" unique_id=710137469]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34.426678, -3.8976188, -41.440052)
+light_color = Color(0.28, 0.95, 0.36, 1)
+light_energy = 5.0
+light_indirect_energy = 5.277
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 13.112398
+
+[node name="Glow_side_9" type="OmniLight3D" parent="ChemicalPools/Pool_03" unique_id=940852357]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.828285, -3.8976188, -49.404697)
+light_color = Color(0.28, 0.95, 0.36, 1)
+light_energy = 5.0
+light_indirect_energy = 5.277
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 13.112398
+
+[node name="Glow_side_6" type="OmniLight3D" parent="ChemicalPools/Pool_03" unique_id=80168446]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48.69284, -3.8976188, -30.63068)
+light_color = Color(0.28, 0.95, 0.36, 1)
+light_energy = 5.0
+light_indirect_energy = 5.277
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 11.637651
+
+[node name="Glow_side_15" type="OmniLight3D" parent="ChemicalPools/Pool_03" unique_id=379428826]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40.750336, -3.8976188, -35.216297)
+light_color = Color(0.28, 0.95, 0.36, 1)
+light_energy = 5.0
+light_indirect_energy = 5.277
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 11.637651
+
+[node name="Glow_side_7" type="OmniLight3D" parent="ChemicalPools/Pool_03" unique_id=2055399801]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -52.8255, -3.8976188, 9.0455475)
+light_color = Color(0.28, 0.95, 0.36, 1)
+light_energy = 5.0
+light_indirect_energy = 5.277
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 11.637651
+
+[node name="Glow_side_14" type="OmniLight3D" parent="ChemicalPools/Pool_03" unique_id=1638396285]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -57.723915, -3.8976188, 0.5612564)
+light_color = Color(0.28, 0.95, 0.36, 1)
+light_energy = 5.0
+light_indirect_energy = 5.277
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 11.637651
+
+[node name="Glow_side_8" type="OmniLight3D" parent="ChemicalPools/Pool_03" unique_id=1489321282]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.719479, -3.8976188, 49.06634)
+light_color = Color(0.28, 0.95, 0.36, 1)
+light_energy = 5.0
+light_indirect_energy = 5.277
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 11.637651
+
+[node name="Glow_side_13" type="OmniLight3D" parent="ChemicalPools/Pool_03" unique_id=1748834967]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35.155495, -3.8976188, 39.650894)
+light_color = Color(0.28, 0.95, 0.36, 1)
+light_energy = 5.0
+light_indirect_energy = 5.277
+light_specular = 0.0
+light_bake_mode = 1
+omni_range = 11.637651
+
+[node name="Effects" type="Node3D" parent="." unique_id=1846965691]
+
+[node name="SpawnPoints" type="Node3D" parent="." unique_id=1090454765]
+
+[node name="Spawn_0" type="Marker3D" parent="SpawnPoints" unique_id=488556538]
+transform = Transform3D(-0.3583675, 0, -0.9335806, 0, 1, 0, 0.9335806, 0, -0.3583675, 4.14, 10, 15.99)
+
+[node name="Spawn_1" type="Marker3D" parent="SpawnPoints" unique_id=1257250433]
+transform = Transform3D(-0.83867055, 0, 0.54463905, 0, 1, 0, -0.54463905, 0, -0.83867055, -32.27, 10, -46.85)
+
+[node name="Spawn_2" type="Marker3D" parent="SpawnPoints" unique_id=1112478665]
+transform = Transform3D(0.76604426, 0, 0.6427878, 0, 1, 0, -0.6427878, 0, 0.76604426, -81.92, 10, 30.58)
+
+[node name="Spawn_3" type="Marker3D" parent="SpawnPoints" unique_id=1450441533]
+transform = Transform3D(0.76604426, 0, 0.6427878, 0, 1, 0, -0.6427878, 0, 0.76604426, -81.92, 10, -81.11604)
+
+[node name="Spawn_4" type="Marker3D" parent="SpawnPoints" unique_id=835835277]
+transform = Transform3D(0.76604426, 0, 0.6427878, 0, 1, 0, -0.6427878, 0, 0.76604426, 55.54744, 3.3853974, -89.75515)
+
+
+[node name="SupplyPoints" type="Node3D" parent="."]
+
+[node name="Supply_0" type="Marker3D" parent="SupplyPoints"]
+position = Vector3(-29, 3.98, -1)
+
+[node name="Supply_1" type="Marker3D" parent="SupplyPoints"]
+position = Vector3(37, 0, -55)
+
+[node name="Supply_2" type="Marker3D" parent="SupplyPoints"]
+position = Vector3(-86, 0, -55)
+
+[node name="Supply_3" type="Marker3D" parent="SupplyPoints"]
+position = Vector3(37, 0, 41)
+
+[node name="Supply_4" type="Marker3D" parent="SupplyPoints"]
+position = Vector3(-86, 0, 35)
+
+[node name="Supply_5" type="Marker3D" parent="SupplyPoints"]
+position = Vector3(-26, 4.09, -55)
+
+[node name="Supply_6" type="Marker3D" parent="SupplyPoints"]
+position = Vector3(28, 0, -7)
+
+[node name="Supply_7" type="Marker3D" parent="SupplyPoints"]
+position = Vector3(-77, 0, -10)
+
+[node name="Supply_8" type="Marker3D" parent="SupplyPoints"]
+position = Vector3(-11, 0, 41)
+
+[node name="Supply_9" type="Marker3D" parent="SupplyPoints"]
+position = Vector3(-47, 0, 32)
+
+[node name="Supply_10" type="Marker3D" parent="SupplyPoints"]
+position = Vector3(1, 3.98, -31)
+
+[node name="Supply_11" type="Marker3D" parent="SupplyPoints"]
+position = Vector3(-59, 0, -37)
+
+[node name="Supply_12" type="Marker3D" parent="SupplyPoints"]
+position = Vector3(1, 0, 11)
+
+[node name="Supply_13" type="Marker3D" parent="SupplyPoints"]
+position = Vector3(-32, 3.98, -28)
+
+[node name="Supply_14" type="Marker3D" parent="SupplyPoints"]
+position = Vector3(-62, 0, 11)
+
+[node name="Supply_15" type="Marker3D" parent="SupplyPoints"]
+position = Vector3(10, 3.98, -55)
+
+[node name="Supply_16" type="Marker3D" parent="SupplyPoints"]
+position = Vector3(13, 0, 35)
+
+[node name="Supply_17" type="Marker3D" parent="SupplyPoints"]
+position = Vector3(25, 0, -34)
+
+[node name="Supply_18" type="Marker3D" parent="SupplyPoints"]
+position = Vector3(31, 0, 17)
+
+[node name="Supply_19" type="Marker3D" parent="SupplyPoints"]
+position = Vector3(-50, 3.98, -13)
+
+[node name="Supply_20" type="Marker3D" parent="SupplyPoints"]
+position = Vector3(-86, 0, -31)
+
+[node name="Supply_21" type="Marker3D" parent="SupplyPoints"]
+position = Vector3(-86, 0, 11)
+
+[node name="Supply_22" type="Marker3D" parent="SupplyPoints"]
+position = Vector3(-26, 0, 23)
+
+[node name="Supply_23" type="Marker3D" parent="SupplyPoints"]
+position = Vector3(-8, 3.98, -10)
+
+[node name="Supply_24" type="Marker3D" parent="SupplyPoints"]
+position = Vector3(-47, 3.98, -55)
+
+[node name="Supply_25" type="Marker3D" parent="SupplyPoints"]
+position = Vector3(-68, 0, 29)
+
+[node name="Supply_26" type="Marker3D" parent="SupplyPoints"]
+position = Vector3(10, 3.98, -13)
+
+[node name="Supply_27" type="Marker3D" parent="SupplyPoints"]
+position = Vector3(-68, 0, -55)
+
+[node name="Supply_28" type="Marker3D" parent="SupplyPoints"]
+position = Vector3(-29, 0, 41)
+
+[node name="Supply_29" type="Marker3D" parent="SupplyPoints"]
+position = Vector3(-8, 3.98, -55)
+
+[node name="Supply_30" type="Marker3D" parent="SupplyPoints"]
+position = Vector3(-41, 0, 14)
+
+[node name="Supply_31" type="Marker3D" parent="SupplyPoints"]
+position = Vector3(-17, 3.98, -40)
+
+[node name="LightmapGI" type="LightmapGI" parent="." unique_id=1431584763]
+visible = false
+light_data = ExtResource("5_fuekp")

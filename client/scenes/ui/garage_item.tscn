@@ -1,0 +1,198 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://assets/ui/legacy/bg.png" id="1_bg"]
+[ext_resource type="Texture2D" path="res://assets/ui/legacy/window_bg.jpg" id="2_window"]
+[ext_resource type="Texture2D" path="res://assets/ui/legacy/window_inner_bg.jpg" id="3_inner"]
+[ext_resource type="Texture2D" path="res://assets/ui/legacy/button_normal.png" id="4_btn_n"]
+[ext_resource type="Texture2D" path="res://assets/ui/legacy/button_hover.png" id="5_btn_h"]
+[ext_resource type="Texture2D" path="res://assets/ui/legacy/button_pressed.png" id="6_btn_p"]
+[ext_resource type="Texture2D" path="res://assets/ui/legacy/big_normal.png" id="7_big_n"]
+[ext_resource type="Texture2D" path="res://assets/ui/legacy/big_hover.png" id="8_big_h"]
+[ext_resource type="Texture2D" path="res://assets/ui/legacy/big_pressed.png" id="9_big_p"]
+[ext_resource type="Texture2D" path="res://assets/ui/legacy/input.png" id="10_input"]
+
+[sub_resource type="StyleBoxTexture" id="StyleWindow"]
+texture = ExtResource("2_window")
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxTexture" id="StyleInner"]
+texture = ExtResource("3_inner")
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxTexture" id="StyleButtonNormal"]
+texture = ExtResource("4_btn_n")
+texture_margin_left = 7.0
+texture_margin_top = 5.0
+texture_margin_right = 7.0
+texture_margin_bottom = 5.0
+content_margin_left = 9.0
+content_margin_top = 5.0
+content_margin_right = 9.0
+content_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="StyleButtonHover"]
+texture = ExtResource("5_btn_h")
+texture_margin_left = 7.0
+texture_margin_top = 5.0
+texture_margin_right = 7.0
+texture_margin_bottom = 5.0
+content_margin_left = 9.0
+content_margin_top = 5.0
+content_margin_right = 9.0
+content_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="StyleButtonPressed"]
+texture = ExtResource("6_btn_p")
+texture_margin_left = 7.0
+texture_margin_top = 5.0
+texture_margin_right = 7.0
+texture_margin_bottom = 5.0
+content_margin_left = 9.0
+content_margin_top = 5.0
+content_margin_right = 9.0
+content_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBigNormal"]
+texture = ExtResource("7_big_n")
+texture_margin_left = 7.0
+texture_margin_top = 5.0
+texture_margin_right = 7.0
+texture_margin_bottom = 5.0
+content_margin_left = 9.0
+content_margin_top = 5.0
+content_margin_right = 9.0
+content_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBigHover"]
+texture = ExtResource("8_big_h")
+texture_margin_left = 7.0
+texture_margin_top = 5.0
+texture_margin_right = 7.0
+texture_margin_bottom = 5.0
+content_margin_left = 9.0
+content_margin_top = 5.0
+content_margin_right = 9.0
+content_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBigPressed"]
+texture = ExtResource("9_big_p")
+texture_margin_left = 7.0
+texture_margin_top = 5.0
+texture_margin_right = 7.0
+texture_margin_bottom = 5.0
+content_margin_left = 9.0
+content_margin_top = 5.0
+content_margin_right = 9.0
+content_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="StyleInput"]
+texture = ExtResource("10_input")
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+content_margin_left = 9.0
+content_margin_top = 5.0
+content_margin_right = 9.0
+content_margin_bottom = 5.0
+
+[node name="GarageItem" type="PanelContainer"]
+custom_minimum_size = Vector2(275, 116)
+theme_override_styles/panel = SubResource("StyleInner")
+
+[node name="Box" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="PreviewSlot" type="Control" parent="Box"]
+custom_minimum_size = Vector2(260, 100)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Preview" type="TextureRect" parent="Box/PreviewSlot"]
+custom_minimum_size = Vector2(260, 100)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+visible = false
+expand_mode = 1
+stretch_mode = 6
+mouse_filter = 2
+
+
+[node name="Name" type="Label" parent="Box"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Предмет"
+horizontal_alignment = 1
+
+[node name="Price" type="Label" parent="Box"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.66, 0.67, 0.64, 1)
+theme_override_font_sizes/font_size = 12
+text = "💎 10"
+horizontal_alignment = 1
+
+[node name="ActionSlot" type="Control" parent="Box"]
+custom_minimum_size = Vector2(180, 31)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Action" type="Button" parent="Box/ActionSlot"]
+custom_minimum_size = Vector2(180, 31)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleButtonNormal")
+theme_override_styles/hover = SubResource("StyleButtonHover")
+theme_override_styles/pressed = SubResource("StyleButtonPressed")
+text = "КУПИТЬ"
+
+[node name="Requirement" type="Label" parent="Box"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.69, 0.56, 1)
+theme_override_font_sizes/font_size = 11
+text = "M1: 💎 15 • Сержант"
+horizontal_alignment = 1
+
+[node name="UpgradeSlot" type="Control" parent="Box"]
+custom_minimum_size = Vector2(180, 31)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Upgrade" type="Button" parent="Box/UpgradeSlot"]
+custom_minimum_size = Vector2(180, 31)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleButtonNormal")
+theme_override_styles/hover = SubResource("StyleButtonHover")
+theme_override_styles/pressed = SubResource("StyleButtonPressed")
+text = "УЛУЧШИТЬ ДО M1"
+
+[node name="FreeCanvas" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+editor_description = "Свободный 2D-слой. Сюда можно перетаскивать визуальные узлы из *Slot, чтобы Position/Size полностью редактировались вручную. Не переименовывайте функциональные узлы."

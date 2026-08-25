@@ -1,0 +1,230 @@
+{
+  "hulls": {
+    "wasp:0": {
+      "model": "res://assets/hulls/wasp_m0_tx.glb",
+      "texture_dir": "res://assets/tank_textures/wasp_m0_tx",
+      "mount": [
+        0.0,
+        1.5,
+        0.6058424711227417
+      ],
+      "source_obj": "wasp/m0/m0_c1a6a5e4_ab807f45/meshes/body__7347693686814027550.obj",
+      "sources": {
+        "albedo": "wasp/m0/m0_c1a6a5e4_ab807f45/textures/wasp_m0_albedo_smothness__4850276545735859761.png",
+        "normal": "wasp/m0/m0_c1a6a5e4_ab807f45/textures/wasp_NRM__-1940855536778793562.png",
+        "masks": "wasp/m0/m0_c1a6a5e4_ab807f45/textures/wasp_m0_masks__-2890915830694145771.png",
+        "mohe": "wasp/m0/m0_c1a6a5e4_ab807f45/textures/wasp_m0_mohe__-6560041481313998490.png"
+      }
+    },
+    "wasp:1": {
+      "model": "res://assets/hulls/wasp_m1_tx.glb",
+      "texture_dir": "res://assets/tank_textures/wasp_m1_tx",
+      "mount": [
+        0.0,
+        1.5,
+        0.6058424647490028
+      ],
+      "source_obj": "wasp/m1/m1_822c2933_b932a69a/meshes/body__-378071482624230975.obj",
+      "sources": {
+        "albedo": "wasp/m1/textures_822c2933_843bfa31/textures/wasp_8march_albedo_smoothness__5160215107629711787.png",
+        "normal": "wasp/m1/m1_822c2933_b932a69a/textures/wasp_m1_nrm__1594896035801277770.png",
+        "masks": "wasp/m1/m1_822c2933_b932a69a/textures/wasp_m1_masks__6808294080397534287.png",
+        "mohe": "wasp/m1/m1_822c2933_b932a69a/textures/wasp_m1_mohe__8018252407915498064.png"
+      }
+    },
+    "viking:0": {
+      "model": "res://assets/hulls/viking_m0_tx.glb",
+      "texture_dir": "res://assets/tank_textures/viking_m0_tx",
+      "mount": [
+        -0.003666569711640477,
+        1.249353289604187,
+        0.474689245223999
+      ],
+      "source_obj": "viking/m0/m0_ef532f2a_54f274ff/meshes/body__-2570553681585164202.obj",
+      "sources": {
+        "albedo": "viking/m0/m0_ef532f2a_54f274ff/textures/viking_m0_albedo_smoothness__3484778911874830819.png",
+        "normal": "viking/m0/m0_ef532f2a_54f274ff/textures/viking_m0_NRM__-379941075847139245.png",
+        "masks": "viking/m0/m0_ef532f2a_54f274ff/textures/viking_m0_masks__-637193608089754030.png",
+        "mohe": "viking/m0/m0_ef532f2a_54f274ff/textures/viking_m0_mohe__-5156790513778066324.png"
+      }
+    },
+    "viking:2": {
+      "model": "res://assets/hulls/viking_m2_tx.glb",
+      "texture_dir": "res://assets/tank_textures/viking_m2_tx",
+      "mount": [
+        -0.003666569711640477,
+        1.249353289604187,
+        0.474689245223999
+      ],
+      "source_obj": "viking/m2/m2_644caab1_d6f8c604/meshes/body__5566542905416766997.obj",
+      "sources": {
+        "albedo": "viking/m2/textures_644caab1_7cd04cb3/textures/viking_m2_albedo_smoothness__7853956748505695123.png",
+        "normal": "viking/m2/m2_644caab1_d6f8c604/textures/viking_m2_nrm__5379238792940057666.png",
+        "masks": "viking/m2/m2_644caab1_d6f8c604/textures/viking_m2_masks__-4417448420228930336.png",
+        "mohe": "viking/m2/textures_644caab1_7cd04cb3/textures/viking_m2_mohe__-6620372445389856491.png"
+      }
+    },
+    "mamont:0": {
+      "model": "res://assets/hulls/mamont_m0_tx.glb",
+      "texture_dir": "res://assets/tank_textures/mamont_m0_tx",
+      "mount": [
+        0.0,
+        1.7443276643753052,
+        -0.9455637335777283
+      ],
+      "source_obj": "mamont/m0/m0_84de6f8c_386a73e8/meshes/mammoth_m0__7140703033711720850.obj",
+      "sources": {
+        "albedo": "mamont/m0/m0_84de6f8c_386a73e8/textures/mammoth_m0_albedo_smoothness__-7347101208829351413.png",
+        "normal": "mamont/m0/m0_84de6f8c_386a73e8/textures/mammoth_m0_NRM__3944769129188792952.png",
+        "masks": "mamont/m0/m0_84de6f8c_386a73e8/textures/mammoth_m0_masks__2459482223221418771.png",
+        "mohe": "mamont/m0/m0_84de6f8c_386a73e8/textures/mammoth_m0_mohe__-7868702966331704515.png"
+      }
+    },
+    "mamont:1": {
+      "model": "res://assets/hulls/mamont_m1_tx.glb",
+      "texture_dir": "res://assets/tank_textures/mamont_m1_tx",
+      "mount": [
+        0.0,
+        1.7443276643753052,
+        -0.9562253952026367
+      ],
+      "source_obj": "mamont/m1/m1_687c0fdf_44fe14c2/meshes/body__-2375685792007324284.obj",
+      "sources": {
+        "albedo": "mamont/m1/m1_687c0fdf_44fe14c2/textures/mammoth_m1_albedo_smoothness__-7731088718076684729.png",
+        "normal": "mamont/m1/m1_687c0fdf_44fe14c2/textures/mammoth_m1_nrm__5784430164205980356.png",
+        "masks": "mamont/m1/m1_687c0fdf_44fe14c2/textures/mammoth_m1_masks__-1997167675366515152.png",
+        "mohe": "mamont/m1/m1_687c0fdf_44fe14c2/textures/mammoth_m1_mohe__-2490734189469194072.png"
+      }
+    },
+    "mamont:2": {
+      "model": "res://assets/hulls/mamont_m2_tx.glb",
+      "texture_dir": "res://assets/tank_textures/mamont_m2_tx",
+      "mount": [
+        0.0,
+        1.7076835632324219,
+        -0.8990448713302612
+      ],
+      "source_obj": "mamont/m2/m2_687c0fe0_94d0abac/meshes/body__-1023556548279716145.obj",
+      "sources": {
+        "albedo": "mamont/m2/m2_687c0fe0_94d0abac/textures/mammoth_m2_albedo_smoothness__4327222336173758744.png",
+        "normal": "mamont/m2/m2_687c0fe0_94d0abac/textures/mammoth_m2_nrm__-8136300865105684816.png",
+        "masks": "mamont/m2/m2_687c0fe0_94d0abac/textures/mammoth_m2_masks__-8423574622926864244.png",
+        "mohe": "mamont/m2/m2_687c0fe0_94d0abac/textures/mammoth_m2_mohe__-852571343538424625.png"
+      }
+    }
+  },
+  "turrets": {
+    "smoky:0": {
+      "model": "res://assets/turrets/smoky_m0_tx.glb",
+      "texture_dir": "res://assets/tank_textures/smoky_m0_tx",
+      "muzzle": [
+        0.0,
+        0.32510265707969666,
+        -2.6831265091896057
+      ],
+      "source_obj": "smoky/m0/m0_eabaf93c_64f98930/meshes/weapon__-269292727904785628.obj",
+      "sources": {
+        "albedo": "smoky/m0/m0_eabaf93c_64f98930/textures/smoky_m0_albedo_smoothness__1655535458226553292.png",
+        "normal": "smoky/m0/m0_eabaf93c_64f98930/textures/smoky_m0_NRM__-2884217246004517552.png",
+        "masks": "smoky/m0/m0_eabaf93c_64f98930/textures/smoky_m0_masks__-1217169214918630484.png",
+        "mohe": "smoky/m0/m0_eabaf93c_64f98930/textures/smoky_m0_mohe__623901823461582872.png"
+      }
+    },
+    "smoky:1": {
+      "model": "res://assets/turrets/smoky_m1_tx.glb",
+      "texture_dir": "res://assets/tank_textures/smoky_m1_tx",
+      "muzzle": [
+        1.907348590179935e-08,
+        0.2861321046948433,
+        -2.8116495609283447
+      ],
+      "source_obj": "smoky/m1/smokym1_62972407_429d1c29/meshes/weapon__-3107518830120027778.obj",
+      "sources": {
+        "albedo": "smoky/m1/textures_62972407_bba72331/textures/smoky_m1_albedo_smoothness__-8183601055031985853.png",
+        "normal": "smoky/m1/textures_62972407_bba72331/textures/smoky_m1_nrm__-1467115826805448861.png",
+        "masks": "smoky/m1/textures_62972407_bba72331/textures/smoky_m1_masks__5450085531949594540.png",
+        "mohe": "smoky/m1/textures_62972407_bba72331/textures/smoky_m1_mohe__-5025218040703129979.png"
+      }
+    },
+    "thunder:0": {
+      "model": "res://assets/turrets/thunder_m0_tx.glb",
+      "texture_dir": "res://assets/tank_textures/thunder_m0_tx",
+      "muzzle": [
+        0.0,
+        0.512396015226841,
+        -3.365340232849121
+      ],
+      "source_obj": "thunder/m0/m0_735438fe_14cc655c/meshes/weapon__-5911079503252484850.obj",
+      "sources": {
+        "albedo": "thunder/m0/m0_735438fe_14cc655c/textures/thunder_m0_albedo_smoothness__-2786666098584509557.png",
+        "normal": "thunder/m0/m0_735438fe_14cc655c/textures/thunder_m0_NRM__8987500526988180276.png",
+        "masks": "thunder/m0/m0_735438fe_14cc655c/textures/thunder_m0_masks__1404518196038029398.png",
+        "mohe": "thunder/m0/m0_735438fe_14cc655c/textures/thunder_m0_mohe__-2589871150443342146.png"
+      }
+    },
+    "thunder:1": {
+      "model": "res://assets/turrets/thunder_m1_tx.glb",
+      "texture_dir": "res://assets/tank_textures/thunder_m1_tx",
+      "muzzle": [
+        0.0,
+        0.5129104405641556,
+        -3.386228173971176
+      ],
+      "source_obj": "thunder/m1/thunderm1_d6e07b86_cc280063/meshes/weapon__6476605680965975257.obj",
+      "sources": {
+        "albedo": "thunder/m1/m1_d6e07b86_583424ff/textures/thunder_m1_albedo_smoothness__5934916177504353128.png",
+        "normal": "thunder/m1/textures_d6e07b86_8b63ae1c/textures/thunder_m1_nrm__-5858293321596079726.png",
+        "masks": "thunder/m1/textures_d6e07b86_8b63ae1c/textures/thunder_m1_masks__2350251202384595030.png",
+        "mohe": "thunder/m1/textures_d6e07b86_8b63ae1c/textures/thunder_m1_mohe__-2435284987897964307.png"
+      }
+    },
+    "thunder:2": {
+      "model": "res://assets/turrets/thunder_m2_tx.glb",
+      "texture_dir": "res://assets/tank_textures/thunder_m2_tx",
+      "muzzle": [
+        0.0,
+        0.5174108743667603,
+        -3.4741660356521606
+      ],
+      "source_obj": "thunder/m2/m2_d6e07b87_7f55ecc5/meshes/weapon__-6861410205879888728.obj",
+      "sources": {
+        "albedo": "thunder/m2/m2_d6e07b87_7f55ecc5/textures/thunder_m2_albedo_smoothness__4610809265933399206.png",
+        "normal": "thunder/m2/m2_d6e07b87_7f55ecc5/textures/thunder_m2_nrm__8069165966396788637.png",
+        "masks": "thunder/m2/m2_d6e07b87_7f55ecc5/textures/thunder_m2_masks__98561879618594439.png",
+        "mohe": "thunder/m2/m2_d6e07b87_7f55ecc5/textures/thunder_m2_mohe__-2723667349175481175.png"
+      }
+    },
+    "firebird:0": {
+      "model": "res://assets/turrets/firebird_m0_tx.glb",
+      "texture_dir": "res://assets/tank_textures/firebird_m0_tx",
+      "muzzle": [
+        0.0,
+        0.4771900027990341,
+        -3.2648271322250366
+      ],
+      "source_obj": "firebird/m0/m0_d1a3c40e_68e6bffc/meshes/weapon__-429145302562075675.obj",
+      "sources": {
+        "albedo": "firebird/m0/m0_d1a3c40e_68e6bffc/textures/flamethrower_m0_albedo_smoothness__3387403884969256718.png",
+        "normal": "firebird/m0/new_a61eb84c_ac89725b/textures/flamethrower_mo_NRM__-5810597939331368521.png",
+        "masks": "firebird/m0/m0_d1a3c40e_68e6bffc/textures/flamethrower_m0_masks__-6718014308304978776.png",
+        "mohe": "firebird/m0/new_a61eb84c_ac89725b/textures/flamethrower_m0_mohe__8441927098038458813.png"
+      }
+    },
+    "firebird:2": {
+      "model": "res://assets/turrets/firebird_m2_tx.glb",
+      "texture_dir": "res://assets/tank_textures/firebird_m2_tx",
+      "muzzle": [
+        0.0,
+        0.39841443905606866,
+        -3.455033600330353
+      ],
+      "source_obj": "firebird/m2/m2_0f3660ff_acaa2b26/meshes/weapon__6188231851464514504.obj",
+      "sources": {
+        "albedo": "firebird/m2/m2_0f3660ff_acaa2b26/textures/flamethrower_m2_albedo_smoothness__7557198825779546955.png",
+        "normal": "firebird/m2/m2_0f3660ff_acaa2b26/textures/flamethrower_m2_nrm__1945202259598276185.png",
+        "masks": "firebird/m2/m2_0f3660ff_acaa2b26/textures/flamethrower_m2_masks__-2924365256534580634.png",
+        "mohe": "firebird/m2/m2_0f3660ff_acaa2b26/textures/flamethrower_m2_mohe__6080473101329712463.png"
+      }
+    }
+  }
+}

@@ -1,0 +1,265 @@
+{
+  "version": 1,
+  "accounts": {
+    "helpred": {
+      "login": "Helpred",
+      "salt": "be88d2126164a303169fea06c2d19839",
+      "password_hash": "c42933d00506431b413a7eec86c1205c39d8778cf02cf77933006d59d1402a42",
+      "created_at": 1787157888,
+      "xp": 844,
+      "crystals": 60,
+      "owned_hulls": [
+        "wasp:2",
+        "viking:1",
+        "mamont:3"
+      ],
+      "owned_turrets": [
+        "smoky:2",
+        "thunder:3",
+        "firebird:1"
+      ],
+      "owned_paints": [
+        "flora",
+        "listva",
+        "izumrud",
+        "winter",
+        "swamp",
+        "fire",
+        "zevs",
+        "black",
+        "green",
+        "blue",
+        "white",
+        "metallic",
+        "bran"
+      ],
+      "equipped": {
+        "hull": "wasp",
+        "hull_mod": 2,
+        "turret": "thunder",
+        "turret_mod": 3,
+        "paint": "bran"
+      },
+      "stats": {
+        "battles": 6,
+        "wins": 3,
+        "kills": 68
+      }
+    },
+    "irdis": {
+      "login": "irdis",
+      "salt": "a8149dbd68a29cfed6a04c144993c9f6",
+      "password_hash": "cbc2b3dcdc86c230867a49b2c8276dedc95d2f136c9372a6641636f3322b32d7",
+      "created_at": 1787158888,
+      "xp": 2113,
+      "crystals": 686,
+      "owned_hulls": [
+        "wasp:2",
+        "mamont:3",
+        "viking:1"
+      ],
+      "owned_turrets": [
+        "smoky:2",
+        "thunder:3",
+        "firebird:1"
+      ],
+      "owned_paints": [
+        "flora",
+        "green",
+        "wood",
+        "holiday"
+      ],
+      "equipped": {
+        "hull": "wasp",
+        "hull_mod": 2,
+        "turret": "firebird",
+        "turret_mod": 1,
+        "paint": "holiday"
+      },
+      "stats": {
+        "battles": 9,
+        "wins": 4,
+        "kills": 157
+      }
+    },
+    "12345": {
+      "login": "12345",
+      "salt": "1d7843807f3735a7748eb587f9baaf7c",
+      "password_hash": "fbe45bc18d413d4dd72c79d06920e3be71d8af3411283d93ba0e469003989cd9",
+      "created_at": 1787260620,
+      "xp": 1677,
+      "crystals": 1794,
+      "owned_hulls": [
+        "mamont:0",
+        "mamont:1",
+        "mamont:2",
+        "mamont:3",
+        "viking:0",
+        "viking:1",
+        "wasp:0",
+        "wasp:1",
+        "wasp:2"
+      ],
+      "owned_turrets": [
+        "firebird:0",
+        "firebird:1",
+        "smoky:0",
+        "smoky:1",
+        "smoky:2",
+        "thunder:0",
+        "thunder:1",
+        "thunder:2",
+        "thunder:3"
+      ],
+      "owned_paints": [
+        "green",
+        "blue",
+        "mishin870",
+        "tester",
+        "h",
+        "chyzoy"
+      ],
+      "equipped": {
+        "hull": "wasp",
+        "hull_mod": 2,
+        "turret": "thunder",
+        "turret_mod": 3,
+        "paint": "chyzoy"
+      },
+      "stats": {
+        "battles": 5,
+        "wins": 2,
+        "kills": 80
+      }
+    },
+    "gospozhaa": {
+      "login": "Gospozhaa",
+      "salt": "4dd76e3e6a455a91f70dcbb7b1992aa4",
+      "password_hash": "1fb4d531ad5552b387bedfca3103a728e3e6ea23f4843b74124b04acaab6ba82",
+      "created_at": 1787337739,
+      "xp": 891,
+      "crystals": 376,
+      "owned_hulls": [
+        "wasp:2",
+        "viking:1"
+      ],
+      "owned_turrets": [
+        "smoky:2",
+        "thunder:3",
+        "firebird:1"
+      ],
+      "owned_paints": [
+        "green",
+        "love"
+      ],
+      "equipped": {
+        "hull": "wasp",
+        "hull_mod": 2,
+        "turret": "firebird",
+        "turret_mod": 1,
+        "paint": "love"
+      },
+      "stats": {
+        "battles": 5,
+        "wins": 0,
+        "kills": 59
+      }
+    },
+    "lexalexa": {
+      "login": "lexalexa",
+      "salt": "1c922b206b3f01f84e15a61bf4ed45e7",
+      "password_hash": "d67e40204adb15e620d56d5cbf4c7416f7e8d72d04ef14781b67034ba948dab1",
+      "created_at": 1787337740,
+      "xp": 968,
+      "crystals": 227,
+      "owned_hulls": [
+        "wasp:2",
+        "viking:1"
+      ],
+      "owned_turrets": [
+        "smoky:2",
+        "thunder:3",
+        "firebird:1"
+      ],
+      "owned_paints": [
+        "green",
+        "kis",
+        "mik"
+      ],
+      "equipped": {
+        "hull": "wasp",
+        "hull_mod": 2,
+        "turret": "firebird",
+        "turret_mod": 1,
+        "paint": "mik"
+      },
+      "stats": {
+        "battles": 5,
+        "wins": 0,
+        "kills": 66
+      }
+    },
+    "992345": {
+      "login": "992345",
+      "salt": "2483c5331309c8f28c841bdfe22f4c61",
+      "password_hash": "6cb1817bf9b72dc16a59ec9c010f9616bbd2522bf9d910b2816cb15a4f2e9a53",
+      "created_at": 1787337740,
+      "xp": 1304,
+      "crystals": 1439,
+      "owned_hulls": [
+        "wasp:2"
+      ],
+      "owned_turrets": [
+        "smoky:2",
+        "firebird:1",
+        "thunder:3"
+      ],
+      "owned_paints": [
+        "green",
+        "m"
+      ],
+      "equipped": {
+        "hull": "wasp",
+        "hull_mod": 2,
+        "turret": "firebird",
+        "turret_mod": 1,
+        "paint": "m"
+      },
+      "stats": {
+        "battles": 4,
+        "wins": 3,
+        "kills": 91
+      }
+    },
+    "111111": {
+      "login": "111111",
+      "salt": "770d38383590549c6399280820c38e30",
+      "password_hash": "5e26547124664c90ab916e311281bf5d386f31db54a36a5563bd7e000c58c271",
+      "created_at": 1787387744,
+      "xp": 0,
+      "crystals": 0,
+      "owned_hulls": [
+        "wasp:0"
+      ],
+      "owned_turrets": [
+        "smoky:0"
+      ],
+      "owned_paints": [
+        "green",
+        "holiday"
+      ],
+      "equipped": {
+        "hull": "wasp",
+        "hull_mod": 0,
+        "turret": "smoky",
+        "turret_mod": 0,
+        "paint": "green"
+      },
+      "stats": {
+        "battles": 0,
+        "wins": 0,
+        "kills": 0
+      }
+    }
+  }
+}

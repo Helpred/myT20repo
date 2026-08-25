@@ -1,0 +1,346 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://assets/ui/legacy/bg.png" id="1_bg"]
+[ext_resource type="Texture2D" path="res://assets/ui/legacy/window_bg.jpg" id="2_window"]
+[ext_resource type="Texture2D" path="res://assets/ui/legacy/window_inner_bg.jpg" id="3_inner"]
+[ext_resource type="Texture2D" path="res://assets/ui/legacy/button_normal.png" id="4_btn_n"]
+[ext_resource type="Texture2D" path="res://assets/ui/legacy/button_hover.png" id="5_btn_h"]
+[ext_resource type="Texture2D" path="res://assets/ui/legacy/button_pressed.png" id="6_btn_p"]
+[ext_resource type="Texture2D" path="res://assets/ui/legacy/big_normal.png" id="7_big_n"]
+[ext_resource type="Texture2D" path="res://assets/ui/legacy/big_hover.png" id="8_big_h"]
+[ext_resource type="Texture2D" path="res://assets/ui/legacy/big_pressed.png" id="9_big_p"]
+[ext_resource type="Texture2D" path="res://assets/ui/legacy/input.png" id="10_input"]
+[ext_resource type="Texture2D" path="res://assets/ui/legacy/title_create_battle.png" id="11_title"]
+[ext_resource type="Texture2D" path="res://assets/ui/battles/kungur.jpg" id="12_preview"]
+
+[sub_resource type="StyleBoxTexture" id="StyleWindow"]
+texture = ExtResource("2_window")
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxTexture" id="StyleInner"]
+texture = ExtResource("3_inner")
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxTexture" id="StyleButtonNormal"]
+texture = ExtResource("4_btn_n")
+texture_margin_left = 7.0
+texture_margin_top = 5.0
+texture_margin_right = 7.0
+texture_margin_bottom = 5.0
+content_margin_left = 9.0
+content_margin_top = 5.0
+content_margin_right = 9.0
+content_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="StyleButtonHover"]
+texture = ExtResource("5_btn_h")
+texture_margin_left = 7.0
+texture_margin_top = 5.0
+texture_margin_right = 7.0
+texture_margin_bottom = 5.0
+content_margin_left = 9.0
+content_margin_top = 5.0
+content_margin_right = 9.0
+content_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="StyleButtonPressed"]
+texture = ExtResource("6_btn_p")
+texture_margin_left = 7.0
+texture_margin_top = 5.0
+texture_margin_right = 7.0
+texture_margin_bottom = 5.0
+content_margin_left = 9.0
+content_margin_top = 5.0
+content_margin_right = 9.0
+content_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBigNormal"]
+texture = ExtResource("7_big_n")
+texture_margin_left = 7.0
+texture_margin_top = 5.0
+texture_margin_right = 7.0
+texture_margin_bottom = 5.0
+content_margin_left = 9.0
+content_margin_top = 5.0
+content_margin_right = 9.0
+content_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBigHover"]
+texture = ExtResource("8_big_h")
+texture_margin_left = 7.0
+texture_margin_top = 5.0
+texture_margin_right = 7.0
+texture_margin_bottom = 5.0
+content_margin_left = 9.0
+content_margin_top = 5.0
+content_margin_right = 9.0
+content_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBigPressed"]
+texture = ExtResource("9_big_p")
+texture_margin_left = 7.0
+texture_margin_top = 5.0
+texture_margin_right = 7.0
+texture_margin_bottom = 5.0
+content_margin_left = 9.0
+content_margin_top = 5.0
+content_margin_right = 9.0
+content_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="StyleInput"]
+texture = ExtResource("10_input")
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+content_margin_left = 9.0
+content_margin_top = 5.0
+content_margin_right = 9.0
+content_margin_bottom = 5.0
+
+[node name="CreateBattleDialog" type="ColorRect"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.58)
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Window" type="PanelContainer" parent="Center"]
+custom_minimum_size = Vector2(530, 540)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleWindow")
+
+[node name="Box" type="VBoxContainer" parent="Center/Window"]
+layout_mode = 2
+theme_override_constants/separation = 9
+
+[node name="TitleSlot" type="Control" parent="Center/Window/Box"]
+custom_minimum_size = Vector2(139, 17)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Title" type="TextureRect" parent="Center/Window/Box/TitleSlot"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("11_title")
+expand_mode = 3
+stretch_mode = 5
+
+
+[node name="NameLabel" type="Label" parent="Center/Window/Box"]
+layout_mode = 2
+text = "Название:"
+
+[node name="NameSlot" type="Control" parent="Center/Window/Box"]
+custom_minimum_size = Vector2(280, 31)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Name" type="LineEdit" parent="Center/Window/Box/NameSlot"]
+custom_minimum_size = Vector2(280, 31)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleInput")
+theme_override_styles/focus = SubResource("StyleInput")
+placeholder_text = "Название битвы"
+
+
+[node name="MapLabel" type="Label" parent="Center/Window/Box"]
+layout_mode = 2
+text = "Карта:"
+
+[node name="MapSlot" type="Control" parent="Center/Window/Box"]
+custom_minimum_size = Vector2(280, 31)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Map" type="OptionButton" parent="Center/Window/Box/MapSlot"]
+custom_minimum_size = Vector2(280, 31)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleButtonNormal")
+theme_override_styles/hover = SubResource("StyleButtonHover")
+theme_override_styles/pressed = SubResource("StyleButtonPressed")
+
+
+[node name="MapNotice" type="Label" parent="Center/Window/Box"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.66, 0.67, 0.64, 1)
+theme_override_font_sizes/font_size = 11
+text = "Карты автоматически читаются из res://scenes/maps/*.tscn"
+
+[node name="Values" type="GridContainer" parent="Center/Window/Box"]
+layout_mode = 2
+columns = 2
+
+[node name="PlayersLabel" type="Label" parent="Center/Window/Box/Values"]
+layout_mode = 2
+text = "Игроков:"
+
+[node name="MaxPlayers" type="SpinBox" parent="Center/Window/Box/Values"]
+layout_mode = 2
+min_value = 2.0
+max_value = 32.0
+update_on_text_changed = true
+value = 10.0
+
+[node name="KillsLabel" type="Label" parent="Center/Window/Box/Values"]
+layout_mode = 2
+text = "Убийств для победы:"
+
+[node name="KillLimit" type="SpinBox" parent="Center/Window/Box/Values"]
+layout_mode = 2
+min_value = 1.0
+max_value = 999.0
+update_on_text_changed = true
+value = 25.0
+
+[node name="MinRankLabel" type="Label" parent="Center/Window/Box/Values"]
+layout_mode = 2
+text = "Минимальное звание:"
+
+[node name="MinRankBox" type="HBoxContainer" parent="Center/Window/Box/Values"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="MinRankIcon" type="TextureRect" parent="Center/Window/Box/Values/MinRankBox"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+mouse_filter = 2
+
+[node name="MinRank" type="OptionButton" parent="Center/Window/Box/Values/MinRankBox"]
+custom_minimum_size = Vector2(245, 31)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleButtonNormal")
+theme_override_styles/hover = SubResource("StyleButtonHover")
+theme_override_styles/pressed = SubResource("StyleButtonPressed")
+
+[node name="MaxRankLabel" type="Label" parent="Center/Window/Box/Values"]
+layout_mode = 2
+text = "Максимальное звание:"
+
+[node name="MaxRankBox" type="HBoxContainer" parent="Center/Window/Box/Values"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="MaxRankIcon" type="TextureRect" parent="Center/Window/Box/Values/MaxRankBox"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+mouse_filter = 2
+
+[node name="MaxRank" type="OptionButton" parent="Center/Window/Box/Values/MaxRankBox"]
+custom_minimum_size = Vector2(245, 31)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleButtonNormal")
+theme_override_styles/hover = SubResource("StyleButtonHover")
+theme_override_styles/pressed = SubResource("StyleButtonPressed")
+
+[node name="PreviewSlot" type="Control" parent="Center/Window/Box"]
+custom_minimum_size = Vector2(480, 180)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Preview" type="TextureRect" parent="Center/Window/Box/PreviewSlot"]
+custom_minimum_size = Vector2(480, 180)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("12_preview")
+expand_mode = 1
+stretch_mode = 6
+
+
+[node name="Buttons" type="HBoxContainer" parent="Center/Window/Box"]
+layout_mode = 2
+theme_override_constants/separation = 7
+
+[node name="CreateSlot" type="Control" parent="Center/Window/Box/Buttons"]
+custom_minimum_size = Vector2(180, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Create" type="Button" parent="Center/Window/Box/Buttons/CreateSlot"]
+custom_minimum_size = Vector2(180, 48)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBigNormal")
+theme_override_styles/hover = SubResource("StyleBigHover")
+theme_override_styles/pressed = SubResource("StyleBigPressed")
+text = "СОЗДАТЬ"
+
+
+[node name="CancelSlot" type="Control" parent="Center/Window/Box/Buttons"]
+custom_minimum_size = Vector2(180, 31)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Cancel" type="Button" parent="Center/Window/Box/Buttons/CancelSlot"]
+custom_minimum_size = Vector2(180, 31)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleButtonNormal")
+theme_override_styles/hover = SubResource("StyleButtonHover")
+theme_override_styles/pressed = SubResource("StyleButtonPressed")
+text = "ОТМЕНА"
+
+[node name="FreeCanvas" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+editor_description = "Свободный 2D-слой. Сюда можно перетаскивать визуальные узлы из *Slot, чтобы Position/Size полностью редактировались вручную. Не переименовывайте функциональные узлы."

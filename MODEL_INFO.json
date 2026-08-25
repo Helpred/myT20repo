@@ -1,0 +1,34 @@
+{
+  "version": "20.0.4",
+  "scope": "Wasp M0 hull only; Smoky turret untouched",
+  "legacy_faces_before": 92,
+  "legacy_faces_retained": 24,
+  "legacy_running_gear_faces_removed": 68,
+  "finished_hull_vertices": 5606,
+  "finished_hull_faces": 10352,
+  "nodes": [
+    "Hull",
+    "LTrack",
+    "RTrack",
+    "whL_1_1",
+    "whR_1_1",
+    "whL_1_2",
+    "whR_1_2",
+    "whL_1_3",
+    "whR_1_3",
+    "whL_1_4",
+    "whR_1_4",
+    "whL_1_5",
+    "whR_1_5",
+    "whL_0_front",
+    "whL_0_rear",
+    "whR_0_front",
+    "whR_0_rear",
+    "mount"
+  ],
+  "mount": [
+    0,
+    1.485,
+    0.825
+  ]
+}

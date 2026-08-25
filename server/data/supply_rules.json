@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "buff_seconds": 25.0,
+  "descent_seconds": 4.8,
+  "ground_seconds": 30.0,
+  "regular_interval_min": 10.0,
+  "regular_interval_max": 15.0,
+  "pickup_radius": 4.4,
+  "avoid_player_radius": 7.5,
+  "avoid_drop_radius": 6.0,
+  "nitro_speed_multiplier": 2.0,
+  "armor_damage_multiplier": 0.5,
+  "damage_multiplier": 2.0,
+  "heal_fraction_of_max_hp": 0.75,
+  "crystal_reward": 1,
+  "gold_reward": 100,
+  "gold_fund_step": 20,
+  "regular_kinds": [
+    "nitro",
+    "armor",
+    "damage",
+    "medkit"
+  ],
+  "pickup_vertical": 3.4,
+  "drop_height": 28.0,
+  "crate_half_height": 0.72,
+  "crystal_lifetime_multiplier": 2.0,
+  "medkit_lifetime_multiplier": 1.5
+}

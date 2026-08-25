@@ -1,0 +1,23 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/ui/auth_screen.tscn" id="1_auth"]
+[ext_resource type="PackedScene" path="res://scenes/ui/lobby_screen.tscn" id="2_lobby"]
+[ext_resource type="PackedScene" path="res://scenes/ui/garage_screen.tscn" id="3_garage"]
+[ext_resource type="PackedScene" path="res://scenes/ui/battle_hud.tscn" id="4_hud"]
+[ext_resource type="PackedScene" path="res://scenes/ui/round_overlay.tscn" id="5_round"]
+[ext_resource type="PackedScene" path="res://scenes/ui/profile_strip.tscn" id="6_profile"]
+
+[node name="UIRoot" type="CanvasLayer"]
+layer = 40
+
+[node name="AuthScreen" parent="." instance=ExtResource("1_auth")]
+
+[node name="LobbyScreen" parent="." instance=ExtResource("2_lobby")]
+
+[node name="GarageScreen" parent="." instance=ExtResource("3_garage")]
+
+[node name="BattleHUD" parent="." instance=ExtResource("4_hud")]
+
+[node name="RoundOverlay" parent="." instance=ExtResource("5_round")]
+
+[node name="ProfileStrip" parent="." instance=ExtResource("6_profile")]

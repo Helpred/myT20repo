@@ -1,0 +1,197 @@
+[gd_scene format=3 uid="uid://bd0jm7ug6nk8q"]
+
+[ext_resource type="Texture2D" uid="uid://dqnaskeqsgh5c" path="res://assets/ui/rank_progress_empty.png" id="11_rank_empty"]
+[ext_resource type="Texture2D" uid="uid://cyguk20c6mgbs" path="res://assets/ui/rank_progress_full.png" id="12_rank_full"]
+[ext_resource type="Texture2D" uid="uid://djy235682npco" path="res://assets/ui/legacy/hud_crystal.png" id="13_crystal"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wvyqt"]
+bg_color = Color(0.075, 0.07, 0.05, 0.94)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.29, 0.27, 0.18, 0.96)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y4aii"]
+bg_color = Color(0.25, 0.47, 0.055, 0.98)
+border_width_top = 1
+border_width_bottom = 1
+border_color = Color(0.39, 0.62, 0.1, 0.98)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[node name="ProfileStrip" type="Control" unique_id=1171361175]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Cluster" type="Control" parent="." unique_id=110992993]
+anchors_preset = 0
+offset_left = 14.0
+offset_top = 8.0
+offset_right = 680.0
+offset_bottom = 78.0
+mouse_filter = 2
+
+[node name="RankIcon" type="TextureRect" parent="Cluster" unique_id=616991013]
+layout_mode = 0
+offset_top = 6.0
+offset_right = 48.0
+offset_bottom = 61.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RankName" type="Label" parent="Cluster" unique_id=1318296658]
+layout_mode = 0
+offset_left = 54.0
+offset_right = 154.0
+offset_bottom = 62.0
+theme_override_colors/font_color = Color(0.96, 0.95, 0.92, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.96)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 15
+text = "Рядовой
+0"
+vertical_alignment = 1
+
+[node name="RankProgress" type="Control" parent="Cluster" unique_id=927003286]
+editor_description = "Полоса опыта в стиле HP/перезарядки: тёмная текстура снизу, яркая сверху внутри FillClip. Можно свободно двигать/масштабировать весь RankProgress в 2D. badge_keep_ratio задаёт долю ширины декоративной звезды, которая всегда остаётся яркой."
+anchors_preset = 0
+offset_left = 158.0
+offset_top = 8.0
+offset_right = 478.0
+offset_bottom = 54.0
+mouse_filter = 2
+metadata/badge_keep_ratio = 0.135
+
+[node name="RankProgressEmpty" type="TextureRect" parent="Cluster/RankProgress" unique_id=598753607]
+modulate = Color(0.95, 0.95, 0.95, 0.96)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("11_rank_empty")
+expand_mode = 1
+
+[node name="RankProgressFillClip" type="Control" parent="Cluster/RankProgress" unique_id=464950782]
+clip_contents = true
+anchors_preset = 0
+offset_right = 43.2
+offset_bottom = 46.0
+mouse_filter = 2
+
+[node name="RankProgressFull" type="TextureRect" parent="Cluster/RankProgress/RankProgressFillClip" unique_id=839208376]
+modulate = Color(0.92, 0.92, 0.92, 0.96)
+layout_mode = 0
+offset_right = 320.0
+offset_bottom = 46.0
+mouse_filter = 2
+texture = ExtResource("12_rank_full")
+expand_mode = 1
+
+[node name="RankProgressText" type="Label" parent="Cluster/RankProgress" unique_id=2053373165]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 52.0
+offset_right = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.98, 0.98, 0.94, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.95)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 13
+text = "0 / 100"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="CrystalPanel" type="PanelContainer" parent="Cluster" unique_id=1595578549]
+custom_minimum_size = Vector2(154, 38)
+layout_mode = 0
+offset_left = 160.0
+offset_top = 58.0
+offset_right = 314.0
+offset_bottom = 96.0
+mouse_filter = 2
+
+[node name="Background" type="ColorRect" parent="Cluster/CrystalPanel" unique_id=1060802647]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.02, 0.022, 0.028, 0.96)
+
+[node name="Accent" type="ColorRect" parent="Cluster/CrystalPanel" unique_id=1232800073]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.89, 0.77, 0.18, 0.88)
+
+[node name="Row" type="HBoxContainer" parent="Cluster/CrystalPanel" unique_id=192624721]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="IconSlot" type="Control" parent="Cluster/CrystalPanel/Row" unique_id=1938971602]
+custom_minimum_size = Vector2(22, 22)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Icon" type="TextureRect" parent="Cluster/CrystalPanel/Row/IconSlot" unique_id=623299234]
+custom_minimum_size = Vector2(22, 22)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("13_crystal")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Amount" type="Label" parent="Cluster/CrystalPanel/Row" unique_id=1048492590]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.98, 0.98, 0.98, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.96)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 15
+text = "0"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="KillProgress" type="ProgressBar" parent="Cluster/CrystalPanel" unique_id=1984376578]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_wvyqt")
+theme_override_styles/fill = SubResource("StyleBoxFlat_y4aii")
+max_value = 15.0
+show_percentage = false
+
+[node name="FreeCanvas" type="Control" parent="." unique_id=291914270]
+editor_description = "Свободный 2D-слой. Сюда можно перетаскивать визуальные узлы из *Slot, чтобы Position/Size полностью редактировались вручную. Не переименовывайте функциональные узлы."
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

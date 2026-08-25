@@ -1,0 +1,283 @@
+--- client/scripts/tank.gd
++++ client/scripts/tank.gd
+@@ -119,8 +119,8 @@
+                 "physics_mass":4.0,
+                 "suspension_k":55.0,
+                 "suspension_damping":9.0,
+-                "drive_gain":0.040,
+-                "lateral_gain":0.22
++                "drive_gain":0.82,
++                "lateral_gain":1.65
+             }
+         1:
+             return {
+@@ -150,8 +150,8 @@
+                 "physics_mass":5.8,
+                 "suspension_k":68.0,
+                 "suspension_damping":10.5,
+-                "drive_gain":0.038,
+-                "lateral_gain":0.24
++                "drive_gain":0.78,
++                "lateral_gain":1.72
+             }
+         _:
+             return {
+@@ -181,8 +181,8 @@
+                 "physics_mass":8.4,
+                 "suspension_k":82.0,
+                 "suspension_damping":12.5,
+-                "drive_gain":0.035,
+-                "lateral_gain":0.27
++                "drive_gain":0.72,
++                "lateral_gain":1.80
+             }
+ 
+ func _build_body() -> void:
+@@ -200,7 +200,7 @@
+     center_of_mass = Vector3(0.0, s.y * 0.34, 0.0)
+ 
+     var physical_material := PhysicsMaterial.new()
+-    physical_material.friction = 0.92
++    physical_material.friction = 0.34
+     physical_material.bounce = 0.0
+     physics_material_override = physical_material
+ 
+@@ -413,14 +413,29 @@
+             return found
+     return null
+ 
++func _is_primary_road_wheel(wheel: Node3D) -> bool:
++    var wheel_name: String = String(wheel.name).to_lower()
++    return wheel_name.begins_with("whl_1_") or wheel_name.begins_with("whr_1_")
++
++func _primary_road_wheel_count() -> int:
++    var count: int = 0
++    for wheel in _left_wheels:
++        if wheel != null and _is_primary_road_wheel(wheel):
++            count += 1
++    for wheel in _right_wheels:
++        if wheel != null and _is_primary_road_wheel(wheel):
++            count += 1
++    return count
++
+ func _rebuild_suspension_points() -> void:
+     _suspension_points.clear()
+     var cfg: Dictionary = _cfg()
+     var travel: float = float(cfg["suspension_travel"])
+     var radius: float = float(cfg["wheel_radius"])
+     var k: float = float(cfg["suspension_k"])
+-    var wheel_count: int = maxi(1, _left_wheels.size() + _right_wheels.size())
+-    var static_sag := (mass * WORLD_GRAVITY) / (float(wheel_count) * maxf(k, 1.0))
++    var primary_count: int = _primary_road_wheel_count()
++    var support_count: int = maxi(1, primary_count)
++    var static_sag: float = (mass * WORLD_GRAVITY) / (float(support_count) * maxf(k, 1.0))
+ 
+     _append_suspension_from_wheels(_left_wheels, -1.0, travel, radius, static_sag)
+     _append_suspension_from_wheels(_right_wheels, 1.0, travel, radius, static_sag)
+@@ -430,22 +445,30 @@
+         for side in [-1.0, 1.0]:
+             for z_factor in [-0.34, -0.17, 0.0, 0.17, 0.34]:
+                 var wheel_center := Vector3(side * s.x * 0.31, radius + 0.08, float(z_factor) * s.z)
++                var anchor := wheel_center + Vector3.UP * travel
+                 _suspension_points.append({
+-                    "anchor": wheel_center + Vector3.UP * travel,
++                    "anchor": anchor,
+                     "side": side,
+-                    "max_len": radius + travel + static_sag,
++                    "max_len": maxf(radius + travel + static_sag, anchor.y + static_sag),
+                     "static_sag": static_sag
+                 })
+ 
+ func _append_suspension_from_wheels(wheels: Array[Node3D], side: float, travel: float, radius: float, static_sag: float) -> void:
+     for wheel in wheels:
+-        if wheel == null:
++        if wheel == null or not _is_primary_road_wheel(wheel):
+             continue
+-        var wheel_local := to_local(wheel.global_position)
++        var wheel_local: Vector3 = to_local(wheel.global_position)
++        var anchor: Vector3 = wheel_local + Vector3.UP * travel
++        # The previous build used only the configured wheel radius as ray length.
++        # The imported road-wheel centres actually sit around 0.46-0.50 m above
++        # the tank origin, so those rays ended above the floor and the body had to
++        # sink before suspension could make contact. Use the imported anchor height
++        # as the neutral floor distance instead.
++        var neutral_floor_distance: float = maxf(radius + travel, anchor.y)
+         _suspension_points.append({
+-            "anchor": wheel_local + Vector3.UP * travel,
++            "anchor": anchor,
+             "side": side,
+-            "max_len": radius + travel + static_sag,
++            "max_len": neutral_floor_distance + static_sag,
+             "static_sag": static_sag
+         })
+ 
+@@ -651,18 +674,21 @@
+     var spring_damping: float = float(cfg["suspension_damping"])
+     var drive_gain: float = float(cfg["drive_gain"])
+     var lateral_gain: float = float(cfg["lateral_gain"])
+-    var up := global_basis.y.normalized()
+-    var down := -up
+-    var forward_raw := -global_basis.z.normalized()
+-    var side_raw := global_basis.x.normalized()
++    var up: Vector3 = global_basis.y.normalized()
++    var down: Vector3 = -up
++    var forward_raw: Vector3 = -global_basis.z.normalized()
++    var side_raw: Vector3 = global_basis.x.normalized()
+     var space := get_world_3d().direct_space_state
+-    _ground_contacts = 0
++    var contacts: Array[Dictionary] = []
++    var average_normal: Vector3 = Vector3.ZERO
+ 
++    # First collect contacts. Drive is applied after this pass so its strength no
++    # longer depends on whether a model happens to contain 10, 14 or 30 wheel meshes.
+     for point in _suspension_points:
+         var anchor_local: Vector3 = point["anchor"]
+         var anchor_world: Vector3 = global_transform * anchor_local
+         var max_len: float = float(point["max_len"])
+-        var query := PhysicsRayQueryParameters3D.create(anchor_world, anchor_world + down * (max_len + 0.12))
++        var query := PhysicsRayQueryParameters3D.create(anchor_world, anchor_world + down * (max_len + 0.16))
+         query.exclude = [get_rid()]
+         var hit := space.intersect_ray(query)
+         if hit.is_empty():
+@@ -671,35 +697,62 @@
+         var hit_pos: Vector3 = hit["position"]
+         var hit_normal: Vector3 = hit["normal"]
+         hit_normal = hit_normal.normalized()
+-        var distance := anchor_world.distance_to(hit_pos)
+-        var compression := maxf(0.0, max_len - distance)
++        var distance: float = anchor_world.distance_to(hit_pos)
++        var compression: float = maxf(0.0, max_len - distance)
+         if compression <= 0.0:
+             continue
+-        _ground_contacts += 1
++        contacts.append({
++            "position": hit_pos,
++            "normal": hit_normal,
++            "compression": compression,
++            "side": float(point["side"])
++        })
++        average_normal += hit_normal
++
++    _ground_contacts = contacts.size()
++    if _ground_contacts <= 0:
++        return
++
++    average_normal = average_normal.normalized() if average_normal.length_squared() > 0.001 else Vector3.UP
++    var contact_count: int = maxi(1, contacts.size())
+ 
+-        var offset := hit_pos - global_position
+-        var point_velocity := linear_velocity + angular_velocity.cross(offset)
+-        var suspension_speed := point_velocity.dot(up)
+-        var spring_force := compression * spring_k - suspension_speed * spring_damping
+-        spring_force = clampf(spring_force, 0.0, mass * WORLD_GRAVITY * 0.85)
++    # Suspension + lateral scrub at each road-wheel contact.
++    for contact in contacts:
++        var hit_pos: Vector3 = contact["position"]
++        var offset: Vector3 = hit_pos - global_position
++        var point_velocity: Vector3 = linear_velocity + angular_velocity.cross(offset)
++        var compression: float = float(contact["compression"])
++        var suspension_speed: float = point_velocity.dot(up)
++        var spring_force: float = compression * spring_k - suspension_speed * spring_damping
++        spring_force = clampf(spring_force, 0.0, mass * WORLD_GRAVITY * 0.90)
+         apply_force(up * spring_force, offset)
+ 
+-        var forward := forward_raw.slide(hit_normal)
+-        var side := side_raw.slide(hit_normal)
+-        if forward.length_squared() > 0.001:
+-            forward = forward.normalized()
++        var side: Vector3 = side_raw.slide(average_normal)
+         if side.length_squared() > 0.001:
+             side = side.normalized()
+-
+-        var track_speed: float = _left_track_speed if float(point["side"]) < 0.0 else _right_track_speed
+-        var target_speed := track_speed * MAX_SPEED
+-        var forward_speed := point_velocity.dot(forward)
+-        var drive_force := (target_speed - forward_speed) * mass * drive_gain
+-        apply_force(forward * drive_force, offset)
+-
+-        var lateral_speed := point_velocity.dot(side)
+-        var grip_force := -lateral_speed * mass * lateral_gain
+-        apply_force(side * grip_force, offset)
++            var lateral_speed: float = point_velocity.dot(side)
++            var grip_force: float = -lateral_speed * mass * lateral_gain / float(contact_count)
++            apply_force(side * grip_force, offset)
++
++    # Reliable longitudinal drive. The old v13 build produced ~1-2 N per contact,
++    # less than the collision body's static friction, so sound/track animation ran
++    # while the rigid body stayed still. Apply one normalized traction force instead.
++    var forward: Vector3 = forward_raw.slide(average_normal)
++    if forward.length_squared() > 0.001:
++        forward = forward.normalized()
++        var average_track: float = (_left_track_speed + _right_track_speed) * 0.5
++        var target_speed: float = average_track * MAX_SPEED
++        var forward_speed: float = linear_velocity.dot(forward)
++        var drive_force: float = (target_speed - forward_speed) * mass * drive_gain
++        drive_force = clampf(drive_force, -mass * 8.0, mass * 8.0)
++        apply_central_force(forward * drive_force)
++
++    # Differential tracks turn the actual rigid body. Torque uses the averaged
++    # terrain normal so steering still works while climbing a ramp.
++    var differential: float = (_right_track_speed - _left_track_speed) * 0.5
++    if absf(differential) > 0.001:
++        var turn_torque: float = differential * mass * 2.35
++        apply_torque(average_normal * turn_torque)
+ 
+ func _apply_climb_assist(_delta: float) -> void:
+     if _ground_contacts <= 0 or absf((_left_track_speed + _right_track_speed) * 0.5) < 0.12:
+@@ -953,12 +1006,11 @@
+     _update_wheel_side(_right_wheels, _right_track_speed, rest, travel, radius, bias_y, delta)
+ 
+ func _update_wheel_side(wheels: Array[Node3D], track_speed: float, _rest: float, travel: float, radius: float, bias_y: float, delta: float) -> void:
+-    var up := global_basis.y.normalized()
+-    var down := -up
++    var up: Vector3 = global_basis.y.normalized()
++    var down: Vector3 = -up
+     var k: float = float(_cfg()["suspension_k"])
+-    var total_wheels: int = maxi(1, _left_wheels.size() + _right_wheels.size())
+-    var static_sag := (mass * WORLD_GRAVITY) / (float(total_wheels) * maxf(k, 1.0))
+-    var max_len := radius + travel + static_sag
++    var primary_count: int = maxi(1, _primary_road_wheel_count())
++    var static_sag: float = (mass * WORLD_GRAVITY) / (float(primary_count) * maxf(k, 1.0))
+     var space := get_world_3d().direct_space_state
+     for wheel in wheels:
+         if wheel == null:
+@@ -966,22 +1018,24 @@
+         var key: int = wheel.get_instance_id()
+         var base_local: Vector3 = _wheel_local_pos.get(key, wheel.position)
+         var base_rot: Vector3 = _wheel_local_rot.get(key, wheel.rotation)
++        var target_y: float = base_local.y + bias_y
+         var parent_node := wheel.get_parent()
+-        if not (parent_node is Node3D):
+-            continue
+-        var parent_3d := parent_node as Node3D
+-        var base_world := parent_3d.to_global(base_local)
+-        var anchor_world := base_world + up * travel
+-        var query := PhysicsRayQueryParameters3D.create(anchor_world, anchor_world + down * (max_len + 0.10))
+-        query.exclude = [get_rid()]
+-        var hit := space.intersect_ray(query)
+-        var suspension_offset := -travel
+-        if not hit.is_empty():
+-            var hit_pos: Vector3 = hit["position"]
+-            var distance := anchor_world.distance_to(hit_pos)
+-            var compression := clampf(max_len - distance - static_sag, -travel, travel)
+-            suspension_offset = compression
+-        var target_y := base_local.y + bias_y + suspension_offset
++        if parent_node is Node3D and _is_primary_road_wheel(wheel):
++            var parent_3d := parent_node as Node3D
++            var base_world: Vector3 = parent_3d.to_global(base_local)
++            var anchor_world: Vector3 = base_world + up * travel
++            var neutral_floor_distance: float = maxf(radius + travel, base_local.y + travel)
++            var max_len: float = neutral_floor_distance + static_sag
++            var query := PhysicsRayQueryParameters3D.create(anchor_world, anchor_world + down * (max_len + 0.16))
++            query.exclude = [get_rid()]
++            var hit := space.intersect_ray(query)
++            var suspension_offset: float = -travel
++            if not hit.is_empty():
++                var hit_pos: Vector3 = hit["position"]
++                var distance: float = anchor_world.distance_to(hit_pos)
++                var compression: float = clampf(max_len - distance - static_sag, -travel, travel)
++                suspension_offset = compression
++            target_y += suspension_offset
+         wheel.position.y = lerpf(wheel.position.y, target_y, clampf(delta * 12.0, 0.0, 1.0))
+         var spin_value: float = float(_wheel_spin.get(key, 0.0))
+         spin_value += (track_speed * MAX_SPEED / maxf(radius, 0.01)) * delta
